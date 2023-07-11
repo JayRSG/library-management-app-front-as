@@ -8,9 +8,9 @@ const Header = () => {
 			<div class='main-wrapper'>
 				<div class='header'>
 					<div class='header-left'>
-						<a href='index.html' class='logo'>
+						<Link href='/' class='logo'>
 							<Image src='/img/logo.png' width='35' height='35' alt='' /> <span>LMS</span>
-						</a>
+						</Link>
 					</div>
 
 					<a id='mobile_btn' class='mobile_btn float-left' href='#sidebar'>
