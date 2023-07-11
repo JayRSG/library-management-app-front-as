@@ -53,7 +53,7 @@ const register = () => {
 
 								<div class='form-group text-center'>
 									<button class='btn btn-primary account-btn' type='submit'>
-										Scan fingerprint
+										Scan Fingerprint
 									</button>
 								</div>
 
@@ -64,7 +64,7 @@ const register = () => {
 								</div>
 
 								<div class='text-center login-link'>
-									Already have an account? <Link href='/user/login'>Login</Link>
+									Already have an account? <Link href='/admin/login'>Login</Link>
 								</div>
 							</form>
 						</div>

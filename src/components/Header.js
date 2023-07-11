@@ -27,7 +27,7 @@ const Header = () => {
 							</a>
 
 							<div class='dropdown-menu'>
-								<a class='dropdown-item' href='login.html'>
+								<a class='dropdown-item' href='admin/login'>
 									Admin
 								</a>
 
