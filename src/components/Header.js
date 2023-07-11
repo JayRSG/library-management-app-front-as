@@ -24,7 +24,7 @@ const Header = () => {
 									<Image class='rounded-circle' src='/img/user.jpg' width='24' height='24' alt='Admin' />
 									<span class='status online'></span>
 								</span>
-								<span>Login</span>
+								<span style={{ marginLeft: 10 }}>Login</span>
 							</a>
 
 							<div class='dropdown-menu'>
