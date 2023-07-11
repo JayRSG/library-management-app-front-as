@@ -22,7 +22,7 @@ const UserNav = () => {
 								</Link>
 							</li>
 
-							<li class={router.pathname === "/user/userProfile" ? "active" : ""}>
+							<li class={router.pathname === "/user/userProfile" || router.pathname === "/user/userEditProfile" ? "active" : ""}>
 								<Link href='/user/userProfile'>
 									<FontAwesomeIcon icon={faUserPlus} />
 									<span>My Account</span>
