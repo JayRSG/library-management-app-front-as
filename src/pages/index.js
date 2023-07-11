@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
 	return (
@@ -20,15 +21,15 @@ export default function Home() {
 								Library Management System project website used to manage all library system activities.
 							</p>
 							<button class='btn btn-danger'>
-								<a class='text-light' href='index-2.html'>
+								<Link class='text-light' href='/admin'>
 									Admin
-								</a>
+								</Link>
 							</button>
 							|
 							<button class='btn btn-primary'>
-								<a class='text-light' href='user/'>
+								<Link class='text-light' href='/user'>
 									User
-								</a>
+								</Link>
 							</button>
 						</div>
 					</div>
