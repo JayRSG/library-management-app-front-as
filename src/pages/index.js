@@ -26,7 +26,7 @@ export default function Home() {
 							</button>
 							|
 							<button class='btn btn-primary'>
-								<a class='text-light' href='index Student.html'>
+								<a class='text-light' href='user/'>
 									User
 								</a>
 							</button>
