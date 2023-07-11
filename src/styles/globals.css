@@ -129,6 +129,9 @@ a:focus {
 
 a {
   color: #009ce7;
+  text-decoration: none;
+  color: #009ce7;
+  outline: none;
 }
 
 input,
@@ -2887,9 +2890,10 @@ ul.chat-user-total li i.old-users {
 
 .filter-row .btn {
   border-radius: 0;
-  min-height: 50px;
-  padding: 12px;
+  min-height: 30px;
+  padding: 8px 12px;
   text-transform: uppercase;
+  border-radius: 10%;
 }
 
 .form-focus.select-focus .focus-label {
