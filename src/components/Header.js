@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const Header = () => {
@@ -23,17 +24,17 @@ const Header = () => {
 									<Image class='rounded-circle' src='/img/user.jpg' width='24' height='24' alt='Admin' />
 									<span class='status online'></span>
 								</span>
-								<span>Login</span>
+								<span style={{ marginLeft: 10 }}>Login</span>
 							</a>
 
 							<div class='dropdown-menu'>
-								<a class='dropdown-item' href='admin/login'>
+								<Link class='dropdown-item' href='/admin/login'>
 									Admin
-								</a>
+								</Link>
 
-								<a class='dropdown-item' href='user/login'>
+								<Link class='dropdown-item' href='/user/login'>
 									User
-								</a>
+								</Link>
 							</div>
 						</li>
 					</ul>
