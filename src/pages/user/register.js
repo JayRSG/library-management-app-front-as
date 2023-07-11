@@ -5,65 +5,65 @@ import React from "react";
 const register = () => {
 	return (
 		<>
-			<div class='main-wrapper  account-wrapper'>
-				<div class='account-page'>
-					<div class='account-center'>
-						<div class='account-box'>
-							<form action='' class='form-signin'>
-								<div class='account-logo'>
+			<div className='main-wrapper  account-wrapper'>
+				<div className='account-page'>
+					<div className='account-center'>
+						<div className='account-box'>
+							<form action='' className='form-signin'>
+								<div className='account-logo'>
 									<Link href='/'>
 										<Image src='/img/logo-dark.png' alt='' width={240} height={240} />
 									</Link>
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>First Name</label>
-									<input type='text' class='form-control' />
+									<input type='text' className='form-control' />
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>Last Name</label>
-									<input type='text' class='form-control' />
+									<input type='text' className='form-control' />
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>Email Address</label>
-									<input type='email' class='form-control' />
+									<input type='email' className='form-control' />
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>Password</label>
-									<input type='password' class='form-control' />
+									<input type='password' className='form-control' />
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>Student Id</label>
-									<input type='text' class='form-control' />
+									<input type='text' className='form-control' />
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>Semester</label>
-									<input type='text' class='form-control' />
+									<input type='text' className='form-control' />
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>Department</label>
-									<input type='text' class='form-control' />
+									<input type='text' className='form-control' />
 								</div>
 
-								<div class='form-group text-center'>
-									<button class='btn btn-primary account-btn' type='submit'>
+								<div className='form-group text-center'>
+									<button className='btn btn-primary account-btn' type='submit'>
 										Scan fingerprint
 									</button>
 								</div>
 
-								<div class='form-group text-center'>
-									<button class='btn btn-primary account-btn' type='submit'>
+								<div className='form-group text-center'>
+									<button className='btn btn-primary account-btn' type='submit'>
 										Signup
 									</button>
 								</div>
 
-								<div class='text-center login-link'>
+								<div className='text-center login-link'>
 									Already have an account? <Link href='/user/login'>Login</Link>
 								</div>
 							</form>
