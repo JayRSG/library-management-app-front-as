@@ -18,7 +18,7 @@ const login = () => {
 
 								<div class='form-group'>
 									<label>Email</label>
-									<input type='text' autofocus='' class='form-control' />
+									<input type='text' autoFocus='' class='form-control' />
 								</div>
 
 								<div class='form-group'>
