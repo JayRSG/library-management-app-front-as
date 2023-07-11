@@ -29,6 +29,13 @@ const UserNav = () => {
 								</Link>
 							</li>
 
+							<li class={router.pathname === "/user/books" || router.pathname === "/user/addBooks" ? "active" : ""}>
+								<Link href='/user/books'>
+									<FontAwesomeIcon icon={faBook} />
+									<span>Books</span>
+								</Link>
+							</li>
+
 							<li class={router.pathname === "/user/userBookReports" ? "active" : ""}>
 								<Link href='/user/userBookReports'>
 									<FontAwesomeIcon icon={faBook} />
