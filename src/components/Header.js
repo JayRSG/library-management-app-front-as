@@ -28,10 +28,11 @@ const Header = () => {
 
 							<div class='dropdown-menu'>
 								<a class='dropdown-item' href='login.html'>
-									Librarien
+									Admin
 								</a>
-								<a class='dropdown-item' href='login.html'>
-									Student
+
+								<a class='dropdown-item' href='user/login'>
+									User
 								</a>
 							</div>
 						</li>
