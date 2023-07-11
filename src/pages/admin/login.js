@@ -26,6 +26,12 @@ const login = () => {
 									<input type='password' class='form-control' />
 								</div>
 
+								<div class='form-group text-center'>
+									<button type='submit' class='btn btn-primary account-btn'>
+										Scan Fingerprint
+									</button>
+								</div>
+
 								<div class='form-group text-right'>
 									<Link href='#'>Forgot your password?</Link>
 								</div>
