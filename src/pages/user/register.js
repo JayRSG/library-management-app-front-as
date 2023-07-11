@@ -51,9 +51,10 @@ const register = () => {
 									<input type='text' class='form-control' />
 								</div>
 
-								<div class='form-group'>
-									<label>Fingerprint</label>
-									<input type='text' class='form-control' />
+								<div class='form-group text-center'>
+									<button class='btn btn-primary account-btn' type='submit'>
+										Scan fingerprint
+									</button>
 								</div>
 
 								<div class='form-group text-center'>
