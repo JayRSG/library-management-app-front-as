@@ -21,13 +21,13 @@ export default function Home() {
 							</p>
 							<button class='btn btn-danger'>
 								<a class='text-light' href='index-2.html'>
-									Librarian
+									Admin
 								</a>
 							</button>
 							|
 							<button class='btn btn-primary'>
 								<a class='text-light' href='index Student.html'>
-									Students
+									User
 								</a>
 							</button>
 						</div>
