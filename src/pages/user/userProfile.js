@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import UserNav from "@/components/user/UserNav";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -20,7 +22,7 @@ const userProfile = () => {
 
 						<div class='col-sm-5 col-6 text-right m-b-30'>
 							<Link href='/user/userEditProfile' class='btn btn-primary btn-rounded'>
-								<i class='fa fa-plus'></i> Edit Profile
+								<FontAwesomeIcon icon={faPlus} /> Edit Profile
 							</Link>
 						</div>
 					</div>
