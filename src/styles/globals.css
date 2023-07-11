@@ -1228,7 +1228,9 @@ textarea.form-control {
 -----------------------*/
 
 .account-page {
-  display: table-row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100%;
   padding: 40px 0;
 }
@@ -1241,16 +1243,18 @@ textarea.form-control {
 }
 
 .account-wrapper {
-  display: table;
-  table-layout: fixed;
-  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   padding: 30px;
   width: 100%;
 }
 
 .account-center {
-  display: table-cell;
-  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .account-box {
