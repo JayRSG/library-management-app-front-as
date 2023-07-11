@@ -5,44 +5,44 @@ import React from "react";
 const login = () => {
 	return (
 		<>
-			<div class='main-wrapper account-wrapper'>
-				<div class='account-page'>
-					<div class='account-center'>
-						<div class='account-box'>
-							<form action='' class='form-signin'>
-								<div class='account-logo'>
+			<div className='main-wrapper account-wrapper'>
+				<div className='account-page'>
+					<div className='account-center'>
+						<div className='account-box'>
+							<form action='' className='form-signin'>
+								<div className='account-logo'>
 									<Link href='/'>
 										<Image src='/img/logo-dark.png' alt='' width={240} height={240} />
 									</Link>
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>Email</label>
-									<input type='text' autoFocus='' class='form-control' />
+									<input type='text' autoFocus='' className='form-control' />
 								</div>
 
-								<div class='form-group'>
+								<div className='form-group'>
 									<label>Password</label>
-									<input type='password' class='form-control' />
+									<input type='password' className='form-control' />
 								</div>
 
-								<div class='form-group text-center'>
-									<button type='submit' class='btn btn-primary account-btn'>
+								<div className='form-group text-center'>
+									<button type='submit' className='btn btn-primary account-btn'>
 										Scan Fingerprint
 									</button>
 								</div>
 
-								<div class='form-group text-right'>
+								<div className='form-group text-right'>
 									<Link href='#'>Forgot your password?</Link>
 								</div>
 
-								<div class='form-group text-center'>
-									<button type='submit' class='btn btn-primary account-btn'>
+								<div className='form-group text-center'>
+									<button type='submit' className='btn btn-primary account-btn'>
 										Login
 									</button>
 								</div>
 
-								<div class='text-center register-link'>
+								<div className='text-center register-link'>
 									Don’t have an account? <Link href='/user/register'>Register Now</Link>
 								</div>
 							</form>

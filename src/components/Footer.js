@@ -2,10 +2,10 @@ import React from "react";
 
 const Footer = () => {
 	return (
-		<div class='bg-light text-center text-lg-start'>
-			<div class='text-center bg-primary p-3 text-light'>
+		<div className='bg-light text-center text-lg-start'>
+			<div className='text-center bg-primary p-3 text-light'>
 				© 2023 Copyright :
-				<a class='text-light' href='#'>
+				<a className='text-light' href='#'>
 					LMS Project
 				</a>
 			</div>
