@@ -22,7 +22,7 @@ const books = () => {
 					<div class='row filter-row'>
 						<div class='col-sm-6 col-md-3'>
 							<div class='form-group'>
-								<input type='text' autofocus='' class='form-control' placeholder='search book name' />
+								<input type='text' autoFocus='' class='form-control' placeholder='search book name' />
 							</div>
 						</div>
 
