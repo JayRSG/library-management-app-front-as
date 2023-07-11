@@ -9,7 +9,7 @@ const register = () => {
 				<div class='account-page'>
 					<div class='account-center'>
 						<div class='account-box'>
-							<form action='http://dreamguys.co.in/preclinic/template/index-2.html' class='form-signin'>
+							<form action='' class='form-signin'>
 								<div class='account-logo'>
 									<Link href='/'>
 										<Image src='/img/logo-dark.png' alt='' width={240} height={240} />
