@@ -11,8 +11,8 @@ const index = () => {
 
 			<AdminNav />
 
-			<div class='page-wrapper'>
-				<div class='content'>
+			<div className='page-wrapper'>
+				<div className='content'>
 					<div>
 						<h1 style={{ textAlign: "center" }}>Welcome to your panel</h1>
 					</div>

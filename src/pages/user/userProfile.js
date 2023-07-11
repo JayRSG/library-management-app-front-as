@@ -13,63 +13,63 @@ const userProfile = () => {
 
 			<UserNav />
 
-			<div class='page-wrapper'>
-				<div class='content'>
-					<div class='row'>
-						<div class='col-sm-7 col-6'>
-							<h4 class='page-title'>My Profile</h4>
+			<div className='page-wrapper'>
+				<div className='content'>
+					<div className='row'>
+						<div className='col-sm-7 col-6'>
+							<h4 className='page-title'>My Profile</h4>
 						</div>
 
-						<div class='col-sm-5 col-6 text-right m-b-30'>
-							<Link href='/user/userEditProfile' class='btn btn-primary btn-rounded'>
+						<div className='col-sm-5 col-6 text-right m-b-30'>
+							<Link href='/user/userEditProfile' className='btn btn-primary btn-rounded'>
 								<FontAwesomeIcon icon={faPlus} /> Edit Profile
 							</Link>
 						</div>
 					</div>
 
-					<div class='card-box profile-header'>
-						<div class='row'>
-							<div class='col-md-12'>
-								<div class='profile-view'>
-									<div class='profile-basic'>
-										<div class='row'>
-											<div class='col-md-5'>
-												<div class='profile-info-left'>
-													<h3 class='user-name m-t-0 mb-0'>Arafat Rasul</h3>
-													<small class='text-muted'>Bsc 2018-2023</small>
-													<div class='staff-id'>Student ID : 18202007 CSE</div>
+					<div className='card-box profile-header'>
+						<div className='row'>
+							<div className='col-md-12'>
+								<div className='profile-view'>
+									<div className='profile-basic'>
+										<div className='row'>
+											<div className='col-md-5'>
+												<div className='profile-info-left'>
+													<h3 className='user-name m-t-0 mb-0'>Arafat Rasul</h3>
+													<small className='text-muted'>Bsc 2018-2023</small>
+													<div className='staff-id'>Student ID : 18202007 CSE</div>
 												</div>
 											</div>
 
-											<div class='col-md-7'>
-												<ul class='personal-info'>
+											<div className='col-md-7'>
+												<ul className='personal-info'>
 													<li>
-														<span class='title'>Phone:</span>
-														<span class='text'>
+														<span className='title'>Phone:</span>
+														<span className='text'>
 															<a href='#'>0305-8751544</a>
 														</span>
 													</li>
 
 													<li>
-														<span class='title'>Email:</span>
-														<span class='text'>
+														<span className='title'>Email:</span>
+														<span className='text'>
 															<a href='#'>example@gmail.com</a>
 														</span>
 													</li>
 
 													<li>
-														<span class='title'>Birthday:</span>
-														<span class='text'>1st January</span>
+														<span className='title'>Birthday:</span>
+														<span className='text'>1st January</span>
 													</li>
 
 													<li>
-														<span class='title'>Address:</span>
-														<span class='text'>Lalkhan Bazar, Bangladesh</span>
+														<span className='title'>Address:</span>
+														<span className='text'>Lalkhan Bazar, Bangladesh</span>
 													</li>
 
 													<li>
-														<span class='title'>Gender:</span>
-														<span class='text'>Male</span>
+														<span className='title'>Gender:</span>
+														<span className='text'>Male</span>
 													</li>
 												</ul>
 											</div>

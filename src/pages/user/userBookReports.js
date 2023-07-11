@@ -9,30 +9,30 @@ const userBookReports = () => {
 
 			<UserNav />
 
-			<div class='page-wrapper'>
-				<div class='content'>
-					<div class='row'>
-						<div class='col-sm-12'>
-							<h4 class='page-title'>Book Report</h4>
+			<div className='page-wrapper'>
+				<div className='content'>
+					<div className='row'>
+						<div className='col-sm-12'>
+							<h4 className='page-title'>Book Report</h4>
 						</div>
 					</div>
-					<div class='row filter-row'>
-						<div class='col-sm-6 col-md-3'>
-							<div class='form-group'>
-								<input type='text' autoFocus='' class='form-control' placeholder='search book name' />
+					<div className='row filter-row'>
+						<div className='col-sm-6 col-md-3'>
+							<div className='form-group'>
+								<input type='text' autoFocus='' className='form-control' placeholder='search book name' />
 							</div>
 						</div>
 
-						<div class='col-sm-6 col-md-3'>
-							<a href='#' class='btn btn-success btn-block'>
+						<div className='col-sm-6 col-md-3'>
+							<a href='#' className='btn btn-success btn-block'>
 								Search
 							</a>
 						</div>
 					</div>
-					<div class='row'>
-						<div class='col-md-12'>
-							<div class='table-responsive'>
-								<table class='table table-striped custom-table mb-0 datatable'>
+					<div className='row'>
+						<div className='col-md-12'>
+							<div className='table-responsive'>
+								<table className='table table-striped custom-table mb-0 datatable'>
 									<thead>
 										<tr>
 											<th>Book-ID</th>

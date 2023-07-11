@@ -9,34 +9,34 @@ const UserNav = () => {
 
 	return (
 		<>
-			<div class='sidebar' id='sidebar'>
-				<div class='sidebar-inner slimscroll'>
-					<div id='sidebar-menu' class='sidebar-menu'>
+			<div className='sidebar' id='sidebar'>
+				<div className='sidebar-inner slimscroll'>
+					<div id='sidebar-menu' className='sidebar-menu'>
 						<ul>
-							<li class='menu-title'>Main</li>
+							<li className='menu-title'>Main</li>
 
-							<li class={router.pathname === "/user" ? "active" : ""}>
+							<li className={router.pathname === "/user" ? "active" : ""}>
 								<Link href='/user'>
 									<FontAwesomeIcon icon={faDashboard} />
 									<span>Dashboard</span>
 								</Link>
 							</li>
 
-							<li class={router.pathname === "/user/userProfile" || router.pathname === "/user/userEditProfile" ? "active" : ""}>
+							<li className={router.pathname === "/user/userProfile" || router.pathname === "/user/userEditProfile" ? "active" : ""}>
 								<Link href='/user/userProfile'>
 									<FontAwesomeIcon icon={faUserPlus} />
 									<span>My Account</span>
 								</Link>
 							</li>
 
-							<li class={router.pathname === "/user/books" || router.pathname === "/user/addBooks" ? "active" : ""}>
+							<li className={router.pathname === "/user/books" || router.pathname === "/user/addBooks" ? "active" : ""}>
 								<Link href='/user/books'>
 									<FontAwesomeIcon icon={faBook} />
 									<span>Books</span>
 								</Link>
 							</li>
 
-							<li class={router.pathname === "/user/userBookReports" ? "active" : ""}>
+							<li className={router.pathname === "/user/userBookReports" ? "active" : ""}>
 								<Link href='/user/userBookReports'>
 									<FontAwesomeIcon icon={faBook} />
 									<span>Book Reports</span>

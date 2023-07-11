@@ -8,26 +8,26 @@ export default function Home() {
 		<>
 			<Header />
 
-			<div id='carouselExampleCaptions' class='carousel slide carousel-fade' data-bs-ride='carousel'>
-				<div class='carousel-inner'>
-					<div class='carousel-item active'>
+			<div id='carouselExampleCaptions' className='carousel slide carousel-fade' data-bs-ride='carousel'>
+				<div className='carousel-inner'>
+					<div className='carousel-item active'>
 						<div style={{ height: "1000px" }}>
-							<Image src='/img/librarybg.jpg' class='d-block w-100' height='5957' width='3493' alt='...' />
+							<Image src='/img/librarybg.jpg' className='d-block w-100' height='5957' width='3493' alt='...' />
 						</div>
 
-						<div class='carousel-caption d-none d-md-block '>
+						<div className='carousel-caption d-none d-md-block '>
 							<h1 style={{ fontSize: "60px", textShadow: "2px 2px 4px #000000" }}>Library Managment System</h1>
 							<p style={{ fontSize: "20px", backgroundColor: "#47494b" }}>
 								Library Management System project website used to manage all library system activities.
 							</p>
-							<button class='btn btn-danger'>
-								<Link class='text-light' href='/admin'>
+							<button className='btn btn-danger'>
+								<Link className='text-light' href='/admin'>
 									Admin
 								</Link>
 							</button>
 							|
-							<button class='btn btn-primary'>
-								<Link class='text-light' href='/user'>
+							<button className='btn btn-primary'>
+								<Link className='text-light' href='/user'>
 									User
 								</Link>
 							</button>
