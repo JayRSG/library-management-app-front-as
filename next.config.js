@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
-}
-
-module.exports = {
-  async headers() {
+  headers: () => {
     return [
       {
         source: "/(.*)",
@@ -22,7 +19,7 @@ module.exports = {
             value: "Content-Type",
           },
         ],
-      },
-    ];
-  },
-};
+      }
+    ]
+  }
+}
