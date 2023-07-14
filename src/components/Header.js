@@ -29,28 +29,32 @@ const Header = () => {
             <i className='fa fa-bars'></i>
           </a>
 
-          <ul className='nav user-menu header-right'>
-            <li className='nav-item dropdown '>
-              <a href='#' className='dropdown-toggle nav-link user-link' data-bs-toggle='dropdown'>
-                <span className='user-img'>
-                  <Image className='rounded-circle' src='/img/user.jpg' width='24' height='24' alt='Admin' />
-                  <span className='status online'></span>
-                </span>
-                <span style={{ marginLeft: 10 }}>Login</span>
-              </a>
+          {
+            !admin || !user ?
+              (<ul className='nav user-menu header-right'>
+                <li className='nav-item dropdown '>
+                  <a href='#' className='dropdown-toggle nav-link user-link' data-bs-toggle='dropdown'>
+                    <span className='user-img'>
+                      <Image className='rounded-circle' src='/img/user.jpg' width='24' height='24' alt='Admin' />
+                      <span className='status online'></span>
+                    </span>
+                    <span style={{ marginLeft: 10 }}>Login</span>
+                  </a>
 
-              <div className='dropdown-menu'>
-                <Link className='dropdown-item' href='/admin/login'>
-                  Admin
-                </Link>
+                  <div className='dropdown-menu'>
+                    <Link className='dropdown-item' href='/admin/login'>
+                      Admin
+                    </Link>
 
-                <Link className='dropdown-item' href='/user/login'>
-                  User
-                </Link>
-              </div>
-            </li>
-          </ul>
-          :
+                    <Link className='dropdown-item' href='/user/login'>
+                      User
+                    </Link>
+                  </div>
+                </li>
+              </ul>)
+              : ""
+          }
+
           <ul className="nav user-menu header-right">
             Hello
             {
