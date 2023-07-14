@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faDashboard, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
+import { useRouter } from "next/router"
+import React from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBook, faDashboard, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import Link from "next/link"
 
 const UserNav = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <>
@@ -54,7 +54,7 @@ const UserNav = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default UserNav;
+export default UserNav

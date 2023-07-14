@@ -1,7 +1,7 @@
-import LoginComponent from "@/components/auth/LoginComponent";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import LoginComponent from "@/components/auth/LoginComponent"
+import Image from "next/image"
+import Link from "next/link"
+import React from "react"
 
 const login = () => {
 
@@ -17,7 +17,7 @@ const login = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default login;
+export default login

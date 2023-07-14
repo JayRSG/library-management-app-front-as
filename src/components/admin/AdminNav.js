@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressBook, faBook, faDashboard, faRotateLeft, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
+import { useRouter } from "next/router"
+import React from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faAddressBook, faBook, faDashboard, faRotateLeft, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import Link from "next/link"
 
 const AdminNav = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <>
@@ -68,7 +68,7 @@ const AdminNav = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AdminNav;
+export default AdminNav
