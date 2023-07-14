@@ -1,9 +1,9 @@
-import Header from "@/components/Header";
-import AdminNav from "@/components/admin/AdminNav";
-import { faEllipsisVertical, faPencil, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import React from "react";
+import Header from "@/components/Header"
+import AdminNav from "@/components/admin/AdminNav"
+import { faEllipsisVertical, faPencil, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Link from "next/link"
+import React from "react"
 
 const issueBook = () => {
 	return (
@@ -68,7 +68,7 @@ const issueBook = () => {
 				</div>
 			</div>
 		</>
-	);
-};
+	)
+}
 
-export default issueBook;
+export default issueBook

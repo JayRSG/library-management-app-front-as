@@ -1,6 +1,6 @@
-import Header from "@/components/Header";
-import AdminNav from "@/components/admin/AdminNav";
-import React from "react";
+import Header from "@/components/Header"
+import AdminNav from "@/components/admin/AdminNav"
+import React from "react"
 
 const addIssueBooks = () => {
 	return (
@@ -60,7 +60,7 @@ const addIssueBooks = () => {
 				</div>
 			</div>
 		</>
-	);
-};
+	)
+}
 
-export default addIssueBooks;
+export default addIssueBooks
