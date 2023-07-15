@@ -1,19 +1,12 @@
-import SwrClient from "@/hooks/swr";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { useAdmin } from "@/hooks/useAdmin"
+import { useUser } from "@/hooks/useUser"
+import Image from "next/image"
+import Link from "next/link"
+import React from "react"
 
 const Header = () => {
-
-  const { data: admin, error: adminError } = SwrClient({
-    endpoint: '/admin',
-  })
-
-  const { data: user, error: userError } = SwrClient({
-    endpoint: '/user',
-  })
-
-  console.log(admin, user)
+  const { data: admin, isLoading: adminLoading, error: adminError } = useAdmin({ middleware: "guest" })
+  const { data: user, isLoading: userLoading, error: userError } = useUser({ middleware: "guest" })
 
   return (
     <>
@@ -30,39 +23,42 @@ const Header = () => {
           </a>
 
           {!user && !admin ?
-            <ul className='nav user-menu header-right'>
-              <li className='nav-item dropdown '>
-                <a href='#' className='dropdown-toggle nav-link user-link' data-bs-toggle='dropdown'>
-                  <span className='user-img'>
-                    <Image className='rounded-circle' src='/img/user.jpg' width='24' height='24' alt='Admin' />
-                    <span className='status online'></span>
-                  </span>
-                  <span style={{ marginLeft: 10 }}>Login</span>
-                </a>
+            (
+              <ul className='nav user-menu header-right'>
+                <li className='nav-item dropdown '>
+                  <a href='#' className='dropdown-toggle nav-link user-link' data-bs-toggle='dropdown'>
+                    <span className='user-img'>
+                      <Image className='rounded-circle' src='/img/user.jpg' width='24' height='24' alt='Admin' />
+                      <span className='status online'></span>
+                    </span>
+                    <span style={{ marginLeft: 10 }}>Login</span>
+                  </a>
 
-                <div className='dropdown-menu'>
-                  <Link className='dropdown-item' href='/admin/login'>
-                    Admin
-                  </Link>
+                  <div className='dropdown-menu'>
+                    <Link className='dropdown-item' href='/admin/login'>
+                      Admin
+                    </Link>
 
-                  <Link className='dropdown-item' href='/user/login'>
-                    User
-                  </Link>
-                </div>
-              </li>
-            </ul>
+                    <Link className='dropdown-item' href='/user/login'>
+                      User
+                    </Link>
+                  </div>
+                </li>
+              </ul>
+            )
             :
             <ul className="nav user-menu header-right">
-            Hello
+              Hello
               {
-                admin ?
+                user ?
                   <div className="nav-item">
-                    <span style={{ marginLeft: 5, color: "#bbb" }}>{admin?.data?.first_name}</span>
+                    <span style={{ marginLeft: 5, color: "#bbb" }}>{user?.data?.first_name}</span>
                   </div>
-                  : user ?
+                  :
+                  admin ?
 
                     <div className="nav-item">
-                      <span style={{ marginLeft: 5, color: "#bbb" }}>{user?.data?.first_name}</span>
+                      <span style={{ marginLeft: 5, color: "#bbb" }}>{admin?.data?.first_name}</span>
                     </div>
                     :
                     ""
@@ -73,7 +69,7 @@ const Header = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

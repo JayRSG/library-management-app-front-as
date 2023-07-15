@@ -1,14 +1,10 @@
 import Header from "@/components/Header"
 import AdminNav from "@/components/admin/AdminNav"
-import SwrClient from "@/hooks/swr"
+import { useAdmin } from "@/hooks/useAdmin"
 import React from "react"
 
 const Index = () => {
-  const { data: admin, error: adminError } = SwrClient({
-    endpoint: '/admin',
-    middleware: "auth",
-    redirectIfAuthenticated: "/admin"
-  })
+  const { data: admin, isLoading: adminLoading, error: adminError } = useAdmin({ middleware: "auth", })
 
   return (
     <>
@@ -19,7 +15,7 @@ const Index = () => {
       <div className='page-wrapper'>
         <div className='content'>
           <div>
-            <h1 style={{ textAlign: "center" }}>Welcome to your panel</h1>
+            <h1 style={{ textAlign: "center" }}>Admin, Welcome to your panel</h1>
           </div>
         </div>
       </div>

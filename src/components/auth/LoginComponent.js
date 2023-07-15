@@ -1,4 +1,6 @@
-import SwrClient, { post } from "@/hooks/swr"
+import { useAdmin } from "@/hooks/useAdmin"
+import { useUser } from "@/hooks/useUser"
+import { post } from "@/lib/axios"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
@@ -10,14 +12,11 @@ const LoginComponent = ({ type }) => {
     user_type: type
   })
 
-  const { data: user, isLoading: userLoading, error: userError, get, post } = SwrClient({
-    endpoint: `/${type}`,
-    middleware: "guest",
-    redirectIfAuthenticated:
-      type == "user" ?
-        "/user" :
-        type == "admin" ?
-          '/admin' : ""
+  const { data: admin, isLoading: adminLoading, mutate: adminMutate } = useAdmin({
+    middleware: "guest", redirectIfAuthenticated: "/admin"
+  })
+  const { data: user, isLoading: userLoading, mutate: userMutate } = useUser({
+    middleware: "guest", redirectIfAuthenticated: "/user"
   })
 
   const handleInputChange = (e) => {
@@ -29,59 +28,61 @@ const LoginComponent = ({ type }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    post({
-      postendpoint: "/login", postData: formData, options: {
+    await post({
+      postendpoint: "/login", postData: formData, config: {
         headers: {
           "Content-Type": 'application/x-www-form-urlencoded'
         }
       }
-    }).then((res) => {
-      get()
-    }).catch(error => {
-      alert(error?.response?.data?.message)
+    }).then(() => {
+      type == "admin" ? adminMutate() : userMutate()
+
+      window.localStorage.setItem('auth_type', type)
     })
+      .catch(error => {
+        alert(error?.response?.data?.message)
+      })
   }
 
-  return (
-    <div className='account-box'>
-      <form action='' className='form-signin' onSubmit={handleFormSubmit}>
-        <div className='account-logo'>
-          <Link href='/'>
-            <Image src='/img/logo-dark.png' alt='' width={240} height={240} />
-          </Link>
-        </div>
+  if (user || admin) {
+    return "Loading..."
+  } else {
+    return (
+      <div className='account-box'>
+        <form action='' className='form-signin' onSubmit={handleFormSubmit}>
+          <div className='account-logo'>
+            <Link href='/'>
+              <Image src='/img/logo-dark.png' alt='' width={240} height={240} />
+            </Link>
+          </div>
 
-        <div className='form-group'>
-          <label>Email</label>
-          <input
-            name="email"
-            value={formData?.email}
-            onChange={handleInputChange}
-            type='text'
-            autoFocus=''
-            className='form-control'
-          />
-        </div>
+          <div className='form-group'>
+            <label>Email</label>
+            <input
+              name="email"
+              value={formData?.email}
+              onChange={handleInputChange}
+              type='text'
+              autoFocus=''
+              required={true}
+              className='form-control'
+            />
+          </div>
 
-        <div className='form-group'>
-          <label>Password</label>
-          <input
-            name="password"
-            value={formData?.password}
-            onChange={handleInputChange}
-            type='password'
-            className='form-control'
-          />
-        </div>
+          <div className='form-group'>
+            <label>Password</label>
+            <input
+              name="password"
+              value={formData?.password}
+              onChange={handleInputChange}
+              type='password'
+              required={true}
+              className='form-control'
+            />
+          </div>
 
-        <div className='form-group text-center'>
-          {userLoading ?
-            (<div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>)
-            :
-
-            (<button
+          <div className='form-group text-center'>
+            <button
               type='submit'
               className='btn btn-primary account-btn'
               onClick={(e) => {
@@ -89,29 +90,32 @@ const LoginComponent = ({ type }) => {
               }}
             >
               Login
-            </button>)
-          }
-        </div>
+            </button>
 
-        <div className="text-center">Or</div>
+          </div>
 
-        <div className='form-group text-center'>
-          <button type='submit' className='btn btn-primary account-btn'>
-            Scan Fingerprint
-          </button>
-        </div>
+          <div className="text-center">Or</div>
 
-        {/* <div className='form-group text-right'>
-									<Link href='#'>Forgot your password?</Link>
-								</div> */}
+          <div className='form-group text-center'>
+            <button type='submit' className='btn btn-primary account-btn'>
+              Scan Fingerprint
+            </button>
+          </div>
+
+          {/* <div className='form-group text-right'>
+                    <Link href='#'>Forgot your password?</Link>
+                  </div> */}
 
 
-        <div className='text-center register-link'>
-          Don’t have an account? <Link href='/user/register'>Register Now</Link>
-        </div>
-      </form>
-    </div>
-  )
+          <div className='text-center register-link'>
+            Don’t have an account? <Link href='/user/register'>Register Now</Link>
+          </div>
+        </form>
+      </div>
+    )
+  }
+
+
 }
 
 export default LoginComponent
