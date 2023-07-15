@@ -1,6 +1,6 @@
-import Header from "@/components/Header";
-import UserNav from "@/components/user/UserNav";
-import React from "react";
+import Header from "@/components/Header"
+import UserNav from "@/components/user/UserNav"
+import React from "react"
 
 const addBooks = () => {
 	return (
@@ -60,7 +60,7 @@ const addBooks = () => {
 				</div>
 			</div>
 		</>
-	);
-};
+	)
+}
 
-export default addBooks;
+export default addBooks

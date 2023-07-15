@@ -1,10 +1,10 @@
-import Header from "@/components/Header";
-import AdminNav from "@/components/admin/AdminNav";
-import { faEllipsisVertical, faPencil, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import Header from "@/components/Header"
+import AdminNav from "@/components/admin/AdminNav"
+import { faEllipsisVertical, faPencil, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Image from "next/image"
+import Link from "next/link"
+import React from "react"
 
 const bookStock = () => {
 	return (
@@ -93,7 +93,7 @@ const bookStock = () => {
 				</div>
 			</div> */}
 		</>
-	);
-};
+	)
+}
 
-export default bookStock;
+export default bookStock

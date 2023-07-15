@@ -1,6 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import LoginComponent from "@/components/auth/LoginComponent"
+import Image from "next/image"
+import Link from "next/link"
+import React from "react"
 
 const login = () => {
 	return (
@@ -42,16 +43,11 @@ const login = () => {
 									</button>
 								</div>
 
-								<div className='text-center register-link'>
-									Don’t have an account? <Link href='/user/register'>Register Now</Link>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
-};
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
 
-export default login;
+export default login

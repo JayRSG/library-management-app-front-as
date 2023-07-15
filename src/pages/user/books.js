@@ -1,9 +1,9 @@
-import Header from "@/components/Header";
-import UserNav from "@/components/user/UserNav";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import React from "react";
+import Header from "@/components/Header"
+import UserNav from "@/components/user/UserNav"
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Link from "next/link"
+import React from "react"
 
 const books = () => {
 	return (
@@ -116,7 +116,7 @@ const books = () => {
 				</div>
 			</div>
 		</>
-	);
-};
+	)
+}
 
-export default books;
+export default books
