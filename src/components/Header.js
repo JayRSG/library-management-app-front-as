@@ -1,19 +1,12 @@
-import SwrClient from "@/hooks/swr"
+import { useAdmin } from "@/hooks/useAdmin"
+import { useUser } from "@/hooks/useUser"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
 
 const Header = () => {
-
-  const { data: admin, error: adminError } = SwrClient({
-    endpoint: '/admin',
-    middleware: "guest"
-  })
-
-  const { data: user, error: userError } = SwrClient({
-    endpoint: '/user',
-    middleware: "guest"
-  })
+  const { data: admin, isLoading: adminLoading, error: adminError } = useAdmin({ middleware: "guest" })
+  const { data: user, isLoading: userLoading, error: userError } = useUser({ middleware: "guest" })
 
   return (
     <>
@@ -29,9 +22,9 @@ const Header = () => {
             <i className='fa fa-bars'></i>
           </a>
 
-          {
-            !admin || !user ?
-              (<ul className='nav user-menu header-right'>
+          {!user && !admin ?
+            (
+              <ul className='nav user-menu header-right'>
                 <li className='nav-item dropdown '>
                   <a href='#' className='dropdown-toggle nav-link user-link' data-bs-toggle='dropdown'>
                     <span className='user-img'>
@@ -51,26 +44,28 @@ const Header = () => {
                     </Link>
                   </div>
                 </li>
-              </ul>)
-              : ""
-          }
-
-          <ul className="nav user-menu header-right">
-            Hello
-            {
-              admin ?
-                <div className="nav-item">
-                  <span style={{ marginLeft: 5, color: "#bbb" }}>{admin?.data?.first_name}</span>
-                </div>
-                : user ?
-
+              </ul>
+            )
+            :
+            <ul className="nav user-menu header-right">
+              Hello
+              {
+                user ?
                   <div className="nav-item">
                     <span style={{ marginLeft: 5, color: "#bbb" }}>{user?.data?.first_name}</span>
                   </div>
                   :
-                  ""
-            }
-          </ul>
+                  admin ?
+
+                    <div className="nav-item">
+                      <span style={{ marginLeft: 5, color: "#bbb" }}>{admin?.data?.first_name}</span>
+                    </div>
+                    :
+                    ""
+              }
+            </ul>
+          }
+
         </div>
       </div>
     </>

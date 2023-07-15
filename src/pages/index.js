@@ -1,19 +1,22 @@
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
-import SwrClient from "@/hooks/swr"
+import { useAdmin } from "@/hooks/useAdmin"
+import { useUser } from "@/hooks/useUser"
 import Image from "next/image"
 import Link from "next/link"
 
 export default function Home() {
 
-  const { data: admin, error: adminError } = SwrClient({
-    endpoint: '/admin',
-    middleware: "guest"
+  const { data: admin, error: adminError } = useAdmin({
+    middleware: "guest",
+    redirectIfAuthenticated: "/admin"
+
   })
 
-  const { data: user, error: userError } = SwrClient({
-    endpoint: '/user',
-    middleware: "guest"
+  const { data: user, error: userError } = useUser({
+    middleware: "guest",
+    redirectIfAuthenticated: '/user'
+
   })
 
   return (

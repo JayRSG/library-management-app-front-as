@@ -1,7 +1,9 @@
-import SwrClient, { post } from "@/hooks/swr"
+import { useAdmin } from "@/hooks/useAdmin"
+import { useUser } from "@/hooks/useUser"
+import { post } from "@/lib/axios"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 const LoginComponent = ({ type }) => {
   const [formData, setFormData] = useState({
@@ -10,20 +12,11 @@ const LoginComponent = ({ type }) => {
     user_type: type
   })
 
-  const { data: user, isLoading: userLoading, error: userError, get, post } = SwrClient({
-    endpoint: `/${type}`,
-    middleware: "guest",
-    redirectIfAuthenticated:
-      type == "user" ?
-        "/user" :
-        type == "admin" ?
-          '/admin' : ""
+  const { data: admin, isLoading: adminLoading, mutate: adminMutate } = useAdmin({
+    middleware: "guest", redirectIfAuthenticated: "/admin"
   })
-
-  const { data: admin, isLoading: adminLoading, error: adminError } = SwrClient({
-    endpoint: "/admin",
-    middleware: 'guest',
-    redirectIfAuthenticated: "/admin"
+  const { data: user, isLoading: userLoading, mutate: userMutate } = useUser({
+    middleware: "guest", redirectIfAuthenticated: "/user"
   })
 
   const handleInputChange = (e) => {
@@ -36,17 +29,22 @@ const LoginComponent = ({ type }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     await post({
-      postendpoint: "/login", postData: formData, options: {
+      postendpoint: "/login", postData: formData, config: {
         headers: {
           "Content-Type": 'application/x-www-form-urlencoded'
         }
       }
-    }).catch(error => {
-      alert(error?.response?.data?.message)
+    }).then(() => {
+      type == "admin" ? adminMutate() : userMutate()
+
+      window.localStorage.setItem('auth_type', type)
     })
+      .catch(error => {
+        alert(error?.response?.data?.message)
+      })
   }
 
-  if ((admin || user) || (adminLoading || userLoading)) {
+  if (user || admin) {
     return "Loading..."
   } else {
     return (
@@ -66,6 +64,7 @@ const LoginComponent = ({ type }) => {
               onChange={handleInputChange}
               type='text'
               autoFocus=''
+              required={true}
               className='form-control'
             />
           </div>
@@ -77,27 +76,22 @@ const LoginComponent = ({ type }) => {
               value={formData?.password}
               onChange={handleInputChange}
               type='password'
+              required={true}
               className='form-control'
             />
           </div>
 
           <div className='form-group text-center'>
-            {userLoading || adminLoading ?
-              (<div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>)
-              :
+            <button
+              type='submit'
+              className='btn btn-primary account-btn'
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
+              Login
+            </button>
 
-              (<button
-                type='submit'
-                className='btn btn-primary account-btn'
-                onClick={(e) => {
-                  e.stopPropagation()
-                }}
-              >
-                Login
-              </button>)
-            }
           </div>
 
           <div className="text-center">Or</div>

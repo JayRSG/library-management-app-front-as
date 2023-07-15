@@ -1,20 +1,22 @@
-import SwrClient from "@/hooks/swr"
+import { useAdmin } from "@/hooks/useAdmin"
+import { useUser } from "@/hooks/useUser"
+import { logout } from "@/lib/axios"
 import { useRouter } from "next/router"
 
 const Logout = () => {
   const router = useRouter()
   const { type } = router.query
 
-  const { data: user, error: userError, logout } = SwrClient({
-    endpoint: `/${type}`,
-    middleware: "auth",
-  })
+  const { data: admin, isLoading: adminLoading } = useAdmin({ middleware: "auth" })
+  const { data: user, isLoading: userLoading } = useUser({ middleware: "auth" })
 
-  if (!userError) {
+  if ((!adminLoading || !userLoading) && (admin || user)) {
     logout()
       .catch(error => {
         throw error
       })
+  } else {
+    router.push('/')
   }
 
   return (
