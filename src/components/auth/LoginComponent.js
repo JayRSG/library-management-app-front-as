@@ -35,9 +35,10 @@ const LoginComponent = ({ type }) => {
         }
       }
     }).then(() => {
-      type == "admin" ? adminMutate() : userMutate()
-
-      window.localStorage.setItem('auth_type', type)
+      type == "admin" ? adminMutate() : type == 'user' ? userMutate() : ""
+      if (type == "admin" || type == "user") {
+        window.localStorage.setItem('auth_type', type)
+      }
     })
       .catch(error => {
         alert(error?.response?.data?.message)

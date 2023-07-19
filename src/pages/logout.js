@@ -15,8 +15,6 @@ const Logout = () => {
       .catch(error => {
         throw error
       })
-  } else {
-    router.push('/')
   }
 
   return (
