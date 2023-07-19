@@ -7,17 +7,19 @@ export const useAdmin = ({ middleware, redirectIfAuthenticated } = {}) => {
   const router = useRouter()
 
   const { data, error, isLoading, mutate } = useSWR({ url: '/admin' }, fetcher, {
-    revalidateOnFocus: false
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+    dedupingInterval: 5000
   })
 
   useEffect(() => {
-    if (middleware === 'guest' && redirectIfAuthenticated && data)
+    if (middleware == "guest" && redirectIfAuthenticated && data)
       router.push(redirectIfAuthenticated)
-    if (middleware === 'auth' && error) {
-      logout()
+    if (middleware == "auth" && error) {
+      logout(mutate)
     }
 
-  }, [middleware, redirectIfAuthenticated, data])
+  }, [middleware, redirectIfAuthenticated, data, error, router, logout, mutate])
 
   return {
     data,
