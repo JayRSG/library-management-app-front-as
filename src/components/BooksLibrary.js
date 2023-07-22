@@ -4,6 +4,7 @@ import { faAdd, faEllipsisVertical, faPencil, faPlus, faTrash } from "@fortaweso
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 import { useState } from "react"
+import PopupModal from "./Modal"
 
 const BooksLibrary = ({ auth_type, auth }) => {
   const [searchTerm, setSearchTerm] = useState({
@@ -14,12 +15,21 @@ const BooksLibrary = ({ auth_type, auth }) => {
   })
 
   const [selectedBook, setSelectedBook] = useState(null);
-  const [issueList, setIssueList] = useState([])
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState(false);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleOpenModal = () => {
+    setModalData('This is the message passed to the modal.');
+    handleShowModal();
+  };
+
 
   const handleRadioChange = (e) => {
     setSelectedBook(e.target.value);
   }
-
 
   const searchTermChangeHandler = (e) => {
     e.preventDefault()
@@ -53,40 +63,28 @@ const BooksLibrary = ({ auth_type, auth }) => {
             </div>
           </div>
 
-          {/* <div className="col-sm-1 col-md-1">
-            <button
-              name="searchSubmit"
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-              className="btn btn-success btn-block"
-            >
-              Search
-            </button>
-          </div> */}
-
-          {/* {auth_type == "admin" &&
-            (<div className="col-sm-6 col-md-3">
-              <Link
-                href="/user/addBooks"
-                className="btn btn-primary btn-rounded"
-                style={{ float: "right" }}
-              >
-                <FontAwesomeIcon icon={faPlus} /> Add Books
-              </Link>
-            </div>)
-          } */}
-
-
           <div className="col-sm-6 col-md-3">
             <Link
               href={`/issueBook?id=${selectedBook}`}
-              className="btn btn-success btn-rounded"
+              className={`btn btn-success btn-rounded ${!selectedBook ? 'disabled' : ''}`}
               style={{ float: "right" }}
             >
               <FontAwesomeIcon icon={faPlus} /> Issue Book
             </Link>
           </div>
+
+          {auth_type == "admin" &&
+            <div className="col-sm-6 col-md-3">
+              <Link
+                href={`/admin/addBooks`}
+                className={`btn btn-primary btn-rounded`}
+                style={{ float: "right" }}
+              >
+                <FontAwesomeIcon icon={faPlus} /> Add Books
+              </Link>
+            </div>
+          }
+
 
         </div>
         <div className="row">
@@ -104,6 +102,7 @@ const BooksLibrary = ({ auth_type, auth }) => {
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Remaining Qty</th>
+                    {auth_type == "admin" && <th>Action</th>}
                   </tr>
                 </thead>
 
@@ -117,6 +116,11 @@ const BooksLibrary = ({ auth_type, auth }) => {
                           value={data?.id}
                           name="selectedBook"
                           checked={selectedBook == data?.id}
+                          onDoubleClick={(e) => {
+                            e.stopPropagation()
+                            e.currentTarget.checked = false
+                            setSelectedBook(null)
+                          }}
                           onChange={handleRadioChange}
                           disabled={data?.remaining_qty <= 0}
                           type="radio" /></td>
@@ -128,6 +132,10 @@ const BooksLibrary = ({ auth_type, auth }) => {
                         <td>{data?.description}</td>
                         <td>{data?.quantity}</td>
                         <td>{data?.remaining_qty}</td>
+                        {
+                          auth_type == "admin" &&
+                          <td><button className="btn btn-primary" onClick={handleOpenModal}>Add Books</button></td>
+                        }
                       </tr>
                     ))
                   }
@@ -137,6 +145,8 @@ const BooksLibrary = ({ auth_type, auth }) => {
           </div>
         </div>
       </div>
+      <PopupModal showModal={showModal} handleCloseModal={handleCloseModal} data={modalData} />
+
     </div>
   )
 }
