@@ -1,5 +1,7 @@
 import { useBorrows } from "@/hooks/useBorrows"
 import { post } from "@/lib/axios"
+import { faEllipsisVertical, faHome, faPencil, faRecycle, faRefresh, faTentArrowTurnLeft, faTrash, faTurnUp } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 
 const UserBorrows = (props) => {
@@ -12,8 +14,8 @@ const UserBorrows = (props) => {
     date_to: "",
   })
 
-  const { borrowData, borrowLoading } = useBorrows({ params: queryParams })
-  const [fine, setFine] = useState(null)
+  const { borrowData, borrowLoading, borrowMutate } = useBorrows({ params: queryParams })
+  const [fine, setFine] = useState([])
 
   useEffect(() => {
     if (auth) {
@@ -28,7 +30,7 @@ const UserBorrows = (props) => {
     })
   }
 
-  const calcualteFine = async (borrow_id) => {
+  const calcualteFine = async (ind, borrow_id) => {
     await post({
       postendpoint: "/books/calculate_fine", postData: { user_id: auth?.id, book_borrow_id: borrow_id }, config: {
         headers: {
@@ -36,10 +38,19 @@ const UserBorrows = (props) => {
         }
       }
     }).then((res) => {
-      console.log(res?.data)
-      setFine(res?.data?.data?.fine_info?.fine)
+      setFine(fine => {
+        const new_arr = fine ? [...fine] : []
+        new_arr[ind] = res?.data?.data?.fine_info?.fine
+
+        return new_arr
+      })
     }).catch(error => {
-      setFine(false)
+      setFine(fine => {
+        const new_arr = fine ? [...fine] : []
+        new_arr[ind] = null
+
+        return new_arr
+      })
     })
   }
 
@@ -106,9 +117,12 @@ const UserBorrows = (props) => {
                       <th>#</th>
                       <th>Book-Name</th>
                       <th>Borrow Date</th>
+                      <th>Due Date</th>
                       <th>return Date</th>
+                      <th>Fine Payment Date</th>
                       <th>Late Fine</th>
                       <th>Status</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
 
@@ -119,12 +133,39 @@ const UserBorrows = (props) => {
                           <td>{ind + 1}</td>
                           <td>{data?.name}</td>
                           <td>{data?.borrow_time}</td>
+                          <td>{data?.due_time ?? 'N/A'}</td>
                           <td>{data?.return_time ?? "N/A"}</td>
-                          <td>{data?.late_fine ? data?.late_fine : (fine == undefined) ? <button className="btn btn-primary" onClick={(e) => {
-                            e.stopPropagation()
-                            calcualteFine(data?.id)
-                          }}>Calculate Fine</button> : fine}</td>
+                          <td>{data?.fine_payment_date ?? 'N/A'}</td>
+                          <td title={"Late fine"}>
+                            {
+                              data?.late_fine ? (data?.late_fine) :
+                                fine[ind] ??
+                                (<button className="btn btn-primary" onClick={(e) => {
+                                  e.stopPropagation()
+                                  calcualteFine(ind, data?.id)
+                                }}>Calculate Fine</button>)
+                            }
+                          </td>
                           <td>{data?.returned ? "Returned" : "Pending"}</td>
+                          <td>
+                            <div className='dropdown dropdown-action' style={{ position: "absolute" }}>
+                              <a href='#' className='action-icon dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+                                <FontAwesomeIcon icon={faEllipsisVertical} style={{ bottom: 10, position: "relative" }} />
+                              </a>
+                              <div className='dropdown-menu dropdown-menu-right'>
+                                <span className='dropdown-item' style={{ cursor: "pointer" }}>
+                                  <FontAwesomeIcon icon={faHome} style={{ marginRight: 10 }} /> Return
+                                </span>
+                                <span className='dropdown-item' style={{ cursor: "pointer" }} onClick={(e) => {
+                                  e.stopPropagation()
+                                  borrowMutate()
+                                  calcualteFine(ind, data?.id)
+                                }}>
+                                  <FontAwesomeIcon icon={faRefresh} style={{ marginRight: 10 }} /> Refresh
+                                </span>
+                              </div>
+                            </div>
+                          </td>
                         </tr>
                       ))
                     }
