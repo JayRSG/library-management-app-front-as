@@ -1,6 +1,6 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBook, faDashboard, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faBook, faDashboard, faList, faUser, faUserPlus, } from "@fortawesome/free-solid-svg-icons"
 import Link from "next/link"
 import { resolveActive } from "@/lib/utils"
 import { useRouter } from "next/router"
@@ -38,7 +38,7 @@ const UserNav = () => {
 
               <li className={resolveActive(["/user/userBorrows"], router.pathname)}>
                 <Link href='/user/userBorrows'>
-                  <FontAwesomeIcon icon={faBook} />
+                  <FontAwesomeIcon icon={faList} />
                   <span>My Borrows</span>
                 </Link>
               </li>
