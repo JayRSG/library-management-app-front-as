@@ -1,6 +1,6 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faAddressBook, faBook, faDashboard, faRotateLeft, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faBook, faDashboard, faMoneyBillWave, faUser, faUsers, faUsersRectangle } from "@fortawesome/free-solid-svg-icons"
 import Link from "next/link"
 import { resolveActive } from "@/lib/utils"
 import { useRouter } from "next/router"
@@ -22,14 +22,7 @@ const AdminNav = () => {
                 </Link>
               </li>
 
-              {/* <li className={resolveActive(["/admin/adminProfile"])}>
-								<Link href='/admin/adminProfile'>
-									<FontAwesomeIcon icon={faUserPlus} />
-									<span>My Account</span>
-								</Link>
-							</li> */}
-
-              <li className={resolveActive(["/booksLibrary", "/issueBook", "/addBooks"], router.pathname)}>
+              <li className={resolveActive(["/booksLibrary", "/issueBook", "/admin/addBooks"], router.pathname)}>
                 <Link href='/booksLibrary'>
                   <FontAwesomeIcon icon={faBook} />
                   <span>Book Library</span>
@@ -38,31 +31,31 @@ const AdminNav = () => {
 
               <li className={resolveActive(["/admin/issueBook", "/admin/addIssueBooks"], router.pathname)}>
                 <Link href='/admin/issueBook'>
-                  <FontAwesomeIcon icon={faAddressBook} />
-                  <span>Issue Books</span>
+                  <FontAwesomeIcon icon={faUsersRectangle} />
+                  <span>Borrower List</span>
                 </Link>
               </li>
 
-              <li className={resolveActive(["/admin/returnBook", "/admin/addReturnBooks"], router.pathname)}>
-                <Link href='/admin/returnBook'>
-                  <FontAwesomeIcon icon={faRotateLeft} />
-                  <span>Return Books</span>
+              <li className={resolveActive(["/admin/payment"], router.pathname)}>
+                <Link href='/admin/payment'>
+                  <FontAwesomeIcon icon={faMoneyBillWave} />
+                  <span>Payment</span>
                 </Link>
               </li>
 
-              <li className={resolveActive(["/admin/bookStock", "/admin/addBook"], router.pathname)}>
+              {/* <li className={resolveActive(["/admin/bookStock"], router.pathname)}>
                 <Link href='/admin/bookStock'>
                   <FontAwesomeIcon icon={faBook} />
                   <span>Add Books</span>
                 </Link>
-              </li>
+              </li> */}
 
-              {/* <li className={resolveActive(["/user/userBookReports"], router.pathname)}>
-								<Link href='/user/userBookReports'>
-									<FontAwesomeIcon icon={faUserPlus} />
-									<span>Add User</span>
+              <li className={resolveActive(["/admin/users"], router.pathname)}>
+								<Link href='/admin/users'>
+									<FontAwesomeIcon icon={faUsers} />
+									<span>Users</span>
 								</Link>
-							</li> */}
+							</li>
 
 
               <li>
