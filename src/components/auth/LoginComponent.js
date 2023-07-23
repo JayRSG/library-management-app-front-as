@@ -103,13 +103,9 @@ const LoginComponent = ({ type }) => {
             </button>
           </div>
 
-          {/* <div className='form-group text-right'>
-                    <Link href='#'>Forgot your password?</Link>
-                  </div> */}
-
 
           <div className='text-center register-link'>
-            Don’t have an account? <Link href='/user/register'>Register Now</Link>
+            Don’t have an account? <Link href={`/${type}/register`}>Register Now</Link>
           </div>
         </form>
       </div>
