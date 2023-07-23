@@ -54,7 +54,7 @@ const AddBooks = () => {
         <div className='content'>
           <div className='row'>
             <div className='col-lg-8 offset-lg-2'>
-              <h4 className='page-title'>Add Issue Book</h4>
+              <h4 className='page-title'>Add Book</h4>
             </div>
           </div>
           <div className='row'>
