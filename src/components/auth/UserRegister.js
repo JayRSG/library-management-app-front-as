@@ -20,6 +20,7 @@ const UserRegister = () => {
     email: "",
     password: "",
     student_id: "",
+    phone: "",
     department: "",
     submit: false
   })
@@ -74,6 +75,11 @@ const UserRegister = () => {
           </div>
 
           <div className='form-group'>
+            <label>Phone</label>
+            <input type='text' name="phone" onChange={handleInputChange} value={formData?.phone} className='form-control' />
+          </div>
+
+          <div className='form-group'>
             <label>Password</label>
             <input type='password' name="password" onChange={handleInputChange} value={formData?.password} className='form-control' />
           </div>
@@ -83,10 +89,6 @@ const UserRegister = () => {
             <input type='text' name="student_id" onChange={handleInputChange} value={formData?.student_id} className='form-control' />
           </div>
 
-          {/* <div className='form-group'>
-            <label>Semester</label>
-            <input type='text' className='form-control' />
-          </div> */}
 
           <div className='form-group'>
             <label>Department</label>
