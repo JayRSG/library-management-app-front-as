@@ -18,7 +18,7 @@ const userEditProfile = () => {
           </div>
           <form>
             <div className='card-box'>
-              <h3 className='card-title'>Basic Informations</h3>
+              <h3 className='card-title'>Basic Information</h3>
               <div className='row'>
                 <div className='col-md-12'>
                   <div>
@@ -26,13 +26,13 @@ const userEditProfile = () => {
                       <div className='col-md-6'>
                         <div className='form-group form-focus'>
                           <label className='focus-label'>First Name</label>
-                          <input type='text' className='form-control floating' value='Arafat' />
+                          <input type='text' className='form-control floating' value='' />
                         </div>
                       </div>
                       <div className='col-md-6'>
                         <div className='form-group form-focus'>
                           <label className='focus-label'>Last Name</label>
-                          <input type='text' className='form-control floating' value='Rasul' />
+                          <input type='text' className='form-control floating' value='' />
                         </div>
                       </div>
                       <div className='col-md-6'>
@@ -59,13 +59,13 @@ const userEditProfile = () => {
             </div>
 
             <div className='card-box'>
-              <h3 className='card-title'>Contact Informations</h3>
+              <h3 className='card-title'>Contact Information</h3>
 
               <div className='row'>
                 <div className='col-md-12'>
                   <div className='form-group form-focus'>
                     <label className='focus-label'>Address</label>
-                    <input type='text' className='form-control floating' value='Lalkhanbazar, Bangladesh' />
+                    <input type='text' className='form-control floating' value='' />
                   </div>
                 </div>
 

@@ -12,7 +12,7 @@ const register = () => {
             <div className='account-box'>
               <div className='account-logo'>
                 <Link href='/'>
-                  <Image src='/img/logo-dark.png' alt='' width={240} height={240} />
+                  <Image src='/img/logo2.png' alt='' width={240} height={240} />
                 </Link>
               </div>
 

@@ -53,7 +53,7 @@ const LoginComponent = ({ type }) => {
         <form action='' className='form-signin' onSubmit={handleFormSubmit}>
           <div className='account-logo'>
             <Link href='/'>
-              <Image src='/img/logo-dark.png' alt='' width={240} height={240} />
+              <Image src='/img/logo2.png' alt='' width={850} height={450} />
             </Link>
           </div>
 

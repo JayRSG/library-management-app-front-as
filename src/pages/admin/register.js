@@ -3,8 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 const register = () => {
-
-  return (
+ return (
     <>
       <div className='main-wrapper  account-wrapper'>
         <div className='account-page'>
@@ -12,7 +11,7 @@ const register = () => {
             <div className='account-box'>
               <div className='account-logo'>
                 <Link href='/'>
-                  <Image src='/img/logo-dark.png' alt='' width={240} height={240} />
+                  <Image src='/img/logo2.png' alt='' width={240} height={240} />
                 </Link>
               </div>
 

@@ -14,7 +14,7 @@ const Header = () => {
         <div className='header'>
           <div className='header-left'>
             <Link href='/' className='logo'>
-              <Image src='/img/logo.png' width='35' height='35' alt='' /> <span>LMS</span>
+              <Image src='/img/logo2.png' width='60' height='60' alt=''/> <span>L M S</span>
             </Link>
           </div>
 
@@ -48,17 +48,17 @@ const Header = () => {
             )
             :
             <ul className="nav user-menu header-right">
-              Hello
+              <p style={{color: "#fff", margin:0}}><i>Hello</i></p>
               {
                 user ?
                   <div className="nav-item">
-                    <span style={{ marginLeft: 5, color: "#bbb" }}>{user?.data?.first_name}</span>
+                    <span style={{ marginLeft: 10, color: "#fff", marginRight: 30}}>{user?.data?.first_name}</span>
                   </div>
                   :
                   admin ?
 
                     <div className="nav-item">
-                      <span style={{ marginLeft: 5, color: "#bbb" }}>{admin?.data?.first_name}</span>
+                      <span style={{marginLeft: 10, color: "#fff", marginRight: 30}}>{admin?.data?.first_name}</span>
                     </div>
                     :
                     ""
