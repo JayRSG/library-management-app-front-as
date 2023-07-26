@@ -22,7 +22,7 @@ const AdminRegister = () => {
     submit: false
   })
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
     setFormData({
       ...formData,
       submit: false,
