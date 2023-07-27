@@ -29,17 +29,10 @@ const AdminNav = () => {
                 </Link>
               </li>
 
-              <li className={resolveActive(["/admin/issueBook", "/admin/addIssueBooks"], router.pathname)}>
-                <Link href='/admin/issueBook'>
+              <li className={resolveActive(["/admin/borrowList", "/admin/addReturnBooks"], router.pathname)}>
+                <Link href='/admin/borrowList'>
                   <FontAwesomeIcon icon={faUsersRectangle} />
                   <span>Borrower List</span>
-                </Link>
-              </li>
-
-              <li className={resolveActive(["/admin/payment"], router.pathname)}>
-                <Link href='/admin/payment'>
-                  <FontAwesomeIcon icon={faMoneyBillWave} />
-                  <span>Payment</span>
                 </Link>
               </li>
 
