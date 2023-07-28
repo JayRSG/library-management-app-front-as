@@ -43,7 +43,7 @@ const BorrowList = (props) => {
     }).then((res) => {
       setFine(fine => {
         const new_arr = fine ? [...fine] : []
-        new_arr[ind] = res?.data?.data?.fine_info?.fine
+        new_arr[ind] = res?.data?.data?.fine_info?.fine ?? "N/A"
 
         return new_arr
       })
