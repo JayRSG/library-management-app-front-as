@@ -146,7 +146,7 @@ const UserBorrows = (props) => {
                                 }}>Calculate Fine</button>)
                             }
                           </td>
-                          <td>{data?.returned ? "Returned" : "Pending"}</td>
+                          <td>{data?.returned == "1" ? "Returned" : data?.returned == "0" && "Pending"}</td>
                           <td>
                             <div className='dropdown dropdown-action' style={{ position: "absolute" }}>
                               <a href='#' className='action-icon dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
