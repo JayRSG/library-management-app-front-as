@@ -1,3 +1,5 @@
+import Footer from "@/components/Footer"
+import Header from "@/components/Header"
 import { useAdmin } from "@/hooks/useAdmin"
 import { useUser } from "@/hooks/useUser"
 import { logout } from "@/lib/axios"
@@ -18,7 +20,11 @@ const Logout = () => {
   }
 
   return (
-    <div>Logging Out</div>
+    <>
+      
+      <div style={{marginTop: "100px"}} className="text-center">Logging Out</div>
+      
+    </>
   )
 }
 

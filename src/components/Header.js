@@ -47,18 +47,18 @@ const Header = () => {
               </ul>
             )
             :
-            <ul className="nav user-menu header-right">
-              <p style={{color: "#fff", margin:0}}><i>Hello</i></p>
+            <ul style={{marginTop: "10px"}} className="nav user-menu header-right">
+              
               {
                 user ?
                   <div className="nav-item">
-                    <span style={{ marginLeft: 10, color: "#fff", marginRight: 30}}>{user?.data?.first_name}</span>
+                    <span style={{ color: "#fff", marginRight: 30}}>{"Hello, " + user?.data?.first_name}</span>
                   </div>
                   :
                   admin ?
 
                     <div className="nav-item">
-                      <span style={{marginLeft: 10, color: "#fff", marginRight: 30}}>{admin?.data?.first_name}</span>
+                      <span style={{color: "#fff", marginRight: 30}}>{"Hello, " + admin?.data?.first_name}</span>
                     </div>
                     :
                     ""
