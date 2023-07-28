@@ -1249,8 +1249,8 @@ textarea.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  padding: 30px;
+  height: 100%;
+  padding: 10px;
   width: 100%;
 }
 
@@ -1870,7 +1870,7 @@ ul.chat-user-total li i.old-users {
 
 .nav-tabs>li>a {
   margin-right: 0;
-  color: #888;
+  color: #bdb9b9;
   border-radius: 0;
 }
 

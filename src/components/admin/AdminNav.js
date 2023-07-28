@@ -1,12 +1,12 @@
-import { useRouter } from "next/router"
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faAddressBook, faBook, faDashboard, faRotateLeft, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faBook, faDashboard, faMoneyBillWave, faUser, faUsers, faUsersRectangle } from "@fortawesome/free-solid-svg-icons"
 import Link from "next/link"
+import { resolveActive } from "@/lib/utils"
+import { useRouter } from "next/router"
 
 const AdminNav = () => {
   const router = useRouter()
-
   return (
     <>
       <div className='sidebar' id='sidebar'>
@@ -15,47 +15,41 @@ const AdminNav = () => {
             <ul>
               <li className='menu-title'>Main</li>
 
-              <li className={router.pathname === "/admin" ? "active" : ""}>
+              <li className={resolveActive(["/admin"], router.pathname)}>
                 <Link href='/admin'>
                   <FontAwesomeIcon icon={faDashboard} />
                   <span>Dashboard</span>
                 </Link>
               </li>
 
-              {/* <li className={router.pathname === "/admin/adminProfile" ? "active" : ""}>
-								<Link href='/admin/adminProfile'>
-									<FontAwesomeIcon icon={faUserPlus} />
-									<span>My Account</span>
-								</Link>
-							</li> */}
+              <li className={resolveActive(["/booksLibrary", "/issueBook", "/admin/addBooks"], router.pathname)}>
+                <Link href='/booksLibrary'>
+                  <FontAwesomeIcon icon={faBook} />
+                  <span>Book Library</span>
+                </Link>
+              </li>
 
-              <li className={router.pathname === "/admin/bookStock" || router.pathname === "/admin/addBook" ? "active" : ""}>
+              <li className={resolveActive(["/admin/borrowList", "/admin/addReturnBooks"], router.pathname)}>
+                <Link href='/admin/borrowList'>
+                  <FontAwesomeIcon icon={faUsersRectangle} />
+                  <span>Borrower List</span>
+                </Link>
+              </li>
+
+              {/* <li className={resolveActive(["/admin/bookStock"], router.pathname)}>
                 <Link href='/admin/bookStock'>
                   <FontAwesomeIcon icon={faBook} />
-                  <span>Add Book Stock</span>
+                  <span>Add Books</span>
                 </Link>
-              </li>
+              </li> */}
 
-              {/* <li className={router.pathname === "/user/userBookReports" ? "active" : ""}>
-								<Link href='/user/userBookReports'>
-									<FontAwesomeIcon icon={faUserPlus} />
-									<span>Add User</span>
+              <li className={resolveActive(["/admin/users"], router.pathname)}>
+								<Link href='/admin/users'>
+									<FontAwesomeIcon icon={faUsers} />
+									<span>Users</span>
 								</Link>
-							</li> */}
+							</li>
 
-              <li className={router.pathname === "/admin/issueBook" || router.pathname === "/admin/addIssueBooks" ? "active" : ""}>
-                <Link href='/admin/issueBook'>
-                  <FontAwesomeIcon icon={faAddressBook} />
-                  <span>Issue Books</span>
-                </Link>
-              </li>
-
-              <li className={router.pathname === "/admin/returnBook" || router.pathname === "/admin/addReturnBooks" ? "active" : ""}>
-                <Link href='/admin/returnBook'>
-                  <FontAwesomeIcon icon={faRotateLeft} />
-                  <span>Return Books</span>
-                </Link>
-              </li>
 
               <li>
                 <Link href='/logout?type=admin'>

@@ -40,7 +40,7 @@ export const del = async ({ delendpoint, config } = {}) => {
   }
 }
 
-export const logout = async () => {
+export const logout = async (mutate) => {
   try {
     return await post({
       postendpoint: '/logout', postData: { logout: true }, config: {
@@ -52,6 +52,7 @@ export const logout = async () => {
       if (window.localStorage.getItem('auth_type')) {
         window.localStorage.removeItem('auth_type')
       }
+      mutate()
     })
   } catch (error) {
     console.log("error logging out")

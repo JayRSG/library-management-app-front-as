@@ -1,12 +1,12 @@
-import { useRouter } from "next/router"
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBook, faDashboard, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faBook, faDashboard, faList, faUser, faUserPlus, } from "@fortawesome/free-solid-svg-icons"
 import Link from "next/link"
+import { resolveActive } from "@/lib/utils"
+import { useRouter } from "next/router"
 
 const UserNav = () => {
   const router = useRouter()
-
   return (
     <>
       <div className='sidebar' id='sidebar'>
@@ -15,31 +15,31 @@ const UserNav = () => {
             <ul>
               <li className='menu-title'>Main</li>
 
-              <li className={router.pathname === "/user" ? "active" : ""}>
+              <li className={resolveActive(["/user"], router.pathname)}>
                 <Link href='/user'>
                   <FontAwesomeIcon icon={faDashboard} />
                   <span>Dashboard</span>
                 </Link>
               </li>
 
-              <li className={router.pathname === "/user/userProfile" || router.pathname === "/user/userEditProfile" ? "active" : ""}>
+              <li className={resolveActive(["/user/userProfile", "/user/userEditProfile"], router.pathname)}>
                 <Link href='/user/userProfile'>
                   <FontAwesomeIcon icon={faUserPlus} />
                   <span>My Account</span>
                 </Link>
               </li>
 
-              <li className={router.pathname === "/user/books" || router.pathname === "/user/addBooks" ? "active" : ""}>
-                <Link href='/user/books'>
+              <li className={resolveActive(["/booksLibrary", "/issueBook", "/user/addBooks"], router.pathname)}>
+                <Link href='/booksLibrary'>
                   <FontAwesomeIcon icon={faBook} />
-                  <span>Books</span>
+                  <span>Book Library</span>
                 </Link>
               </li>
 
-              <li className={router.pathname === "/user/userBookReports" ? "active" : ""}>
-                <Link href='/user/userBookReports'>
-                  <FontAwesomeIcon icon={faBook} />
-                  <span>Book Reports</span>
+              <li className={resolveActive(["/user/userBorrows"], router.pathname)}>
+                <Link href='/user/userBorrows'>
+                  <FontAwesomeIcon icon={faList} />
+                  <span>My Borrows</span>
                 </Link>
               </li>
 

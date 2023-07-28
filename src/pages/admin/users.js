@@ -1,19 +1,16 @@
 import Header from "@/components/Header"
 import AdminNav from "@/components/admin/AdminNav"
-import AdminDashboard from "@/components/admin/Dashboard"
-import React from "react"
+import Users from "@/components/admin/Users"
 
-const Index = () => {
 
+const bookStock = () => {
   return (
     <>
       <Header />
-
       <AdminNav />
-
-      <AdminDashboard />
+      <Users />
     </>
   )
 }
 
-export default Index
+export default bookStock

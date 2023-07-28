@@ -35,9 +35,10 @@ const LoginComponent = ({ type }) => {
         }
       }
     }).then(() => {
-      type == "admin" ? adminMutate() : userMutate()
-
-      window.localStorage.setItem('auth_type', type)
+      type == "admin" ? adminMutate() : type == 'user' ? userMutate() : ""
+      if (type == "admin" || type == "user") {
+        window.localStorage.setItem('auth_type', type)
+      }
     })
       .catch(error => {
         alert(error?.response?.data?.message)
@@ -52,7 +53,7 @@ const LoginComponent = ({ type }) => {
         <form action='' className='form-signin' onSubmit={handleFormSubmit}>
           <div className='account-logo'>
             <Link href='/'>
-              <Image src='/img/logo-dark.png' alt='' width={240} height={240} />
+              <Image src='/img/logo2.png' alt='' width={850} height={450} />
             </Link>
           </div>
 
@@ -102,13 +103,9 @@ const LoginComponent = ({ type }) => {
             </button>
           </div>
 
-          {/* <div className='form-group text-right'>
-                    <Link href='#'>Forgot your password?</Link>
-                  </div> */}
-
 
           <div className='text-center register-link'>
-            Don’t have an account? <Link href='/user/register'>Register Now</Link>
+            Don’t have an account? <Link href={`/${type}/register`}>Register Now</Link>
           </div>
         </form>
       </div>

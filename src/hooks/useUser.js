@@ -7,17 +7,19 @@ export const useUser = ({ middleware, redirectIfAuthenticated, options } = {}) =
   const router = useRouter()
 
   const { data, error, isLoading, mutate } = useSWR({ url: '/user' }, fetcher, {
-    revalidateOnFocus: false
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+    dedupingInterval: 5000
   })
 
   useEffect(() => {
     if (middleware === 'guest' && redirectIfAuthenticated && data)
       router.push(redirectIfAuthenticated)
     if (middleware === 'auth' && error) {
-      logout()
+      logout(mutate)
     }
 
-  }, [middleware, redirectIfAuthenticated, data])
+  }, [middleware, redirectIfAuthenticated, data, error, router, logout, mutate])
 
   return {
     data,
