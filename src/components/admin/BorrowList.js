@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 
 const BorrowList = (props) => {
-  const { auth, loader } = props
   const [queryParams, setQueryParams] = useState({
     id: "",
     all: true,
@@ -27,6 +26,7 @@ const BorrowList = (props) => {
       all: (e.currentTarget.name != "all" && e.currentTarget.name != "returned") ? 0 : 1,
       [e.currentTarget.name]: e.currentTarget.type == "checkbox" ? (e.currentTarget.checked ? 1 : 0) : e.currentTarget.value
     })
+    setFine([])
   }
 
   const submitForm = async (e) => {
