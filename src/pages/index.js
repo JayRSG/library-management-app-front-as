@@ -26,8 +26,8 @@ export default function Home() {
       <div id='carouselExampleCaptions' className='carousel slide carousel-fade' data-bs-ride='carousel'>
         <div className='carousel-inner'>
           <div className='carousel-item active'>
-            <div style={{ height: "960px" }}>
-              <Image src='/img/mylibbg.png' className='d-block w-100' height='600' width='400' alt='...' />
+            <div style={{ height: "541px" }}>
+              <Image src='/img/mylibbg.png' className='d-block w-100' height='609' width='400' alt='...' />
             </div>
 
             <div className='carousel-caption d-none d-md-block '>
