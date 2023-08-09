@@ -9,11 +9,7 @@ const IssueBook = (props) => {
   const { bookdata, bookLoading } = useBooks({ params: { id: id } })
   const [scanData, setScanData] = useState(null)
 
-  const handleInputChange = () => {
-
-  }
-
-  console.log(auth_type)
+  
   const handleSubmit = (e) => {
 
   }
