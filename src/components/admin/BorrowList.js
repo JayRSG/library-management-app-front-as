@@ -1,6 +1,6 @@
 import { useBorrows } from "@/hooks/useBorrows"
 import { post } from "@/lib/axios"
-import { faEllipsisVertical, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faEllipsisVertical, faExpandArrowsAlt, faRecycle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 
@@ -156,12 +156,12 @@ const BorrowList = (props) => {
                           <FontAwesomeIcon icon={faEllipsisVertical} style={{ bottom: 10, position: "relative" }} />
                         </a>
                         <div className='dropdown-menu dropdown-menu-right'>
-                          <a className='dropdown-item' href='#'>
-                            <FontAwesomeIcon icon={faPencil} style={{ marginRight: 10 }} /> Edit
-                          </a>
-                          <a className='dropdown-item' href='#' data-bs-toggle='modal' data-target='#delete_patient'>
-                            <FontAwesomeIcon icon={faTrash} style={{ marginRight: 10 }} /> Delete
-                          </a>
+                          <button className='dropdown-item' >
+                            <FontAwesomeIcon icon={faExpandArrowsAlt} style={{ marginRight: 10 }} /> Extend
+                          </button>
+                          <button className='dropdown-item'>
+                            <FontAwesomeIcon icon={faRecycle} style={{ marginRight: 10 }} /> Return
+                          </button>
                         </div>
                       </div>
                     </td>
