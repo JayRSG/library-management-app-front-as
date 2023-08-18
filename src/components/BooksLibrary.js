@@ -50,15 +50,15 @@ const BooksLibrary = ({ auth_type, auth }) => {
           </div>
         </div>
         <div className="row filter-row">
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-4">
             <div className="form-group">
               <input
                 name="search_term"
                 onChange={searchTermChangeHandler}
                 type="text"
                 autoFocus=""
-                className="form-control"
-                placeholder="Enter Book Name, Author, Publisher, ISBN"
+                className="form-control text-center"
+                placeholder="Enter Book Name, Author, Publisher, ISBN, Call Number"
               />
             </div>
           </div>
@@ -96,9 +96,11 @@ const BooksLibrary = ({ auth_type, auth }) => {
                     <th></th>
                     <th>#</th>
                     <th>Book-Name</th>
+                    <th>Edition</th>
                     <th>Author</th>
                     <th>Publisher</th>
                     <th>ISBN</th>
+                    <th>Call Number</th>
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Remaining Qty</th>
@@ -126,9 +128,11 @@ const BooksLibrary = ({ auth_type, auth }) => {
                           type="radio" /></td>
                         <td>{ind + 1}</td>
                         <td>{data?.name}</td>
+                        <td>{data?.edition}</td>
                         <td>{data?.author}</td>
                         <td>{data?.publisher}</td>
                         <td>{data?.isbn}</td>
+                        <td>{data?.call_number}</td>
                         <td>{data?.description}</td>
                         <td>{data?.quantity}</td>
                         <td>{data?.remaining_qty}</td>
