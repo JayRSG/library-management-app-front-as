@@ -69,7 +69,7 @@ const BooksLibrary = ({ auth_type, auth }) => {
               className={`btn btn-success btn-rounded ${!selectedBook ? 'disabled' : ''}`}
               style={{ float: "right" }}
             >
-              <FontAwesomeIcon icon={faPlus} /> Issue Book
+              <FontAwesomeIcon icon={faPlus} /> {auth_type == "admin" ? "Issue Book" : "Borrow Book"}
             </Link>
           </div>
 
