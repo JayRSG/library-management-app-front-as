@@ -8,6 +8,9 @@ const axios = Axios.create({
 export const fetcher = async ({ url, params } = {}) => {
   return await axios.get(url, params ? { params: params } : "")
     .then(res => res.data)
+    .catch(error => {
+      throw error
+    })
 }
 
 export const post = async ({ postendpoint, postData, config } = {}) => {
