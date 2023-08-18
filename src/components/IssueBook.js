@@ -9,7 +9,7 @@ const IssueBook = (props) => {
   const { bookdata, bookLoading } = useBooks({ params: { id: id } })
   const [scanData, setScanData] = useState(null)
 
-  
+
   const handleSubmit = (e) => {
 
   }
@@ -41,8 +41,8 @@ const IssueBook = (props) => {
 
                   <div className='col-md-6'>
                     <div className='form-group'>
-                      <label>ID, Semester Department</label>
-                      <p>{(auth_type == "admin" && "Scan Fingerprint") || (auth_type == "user" && auth?.student_id + "; " + auth?.semester + "th semester, " + auth?.department)}</p>
+                      <label>ID, Semester, School</label>
+                      <p>{(auth_type == "admin" && "Scan Fingerprint") || (auth_type == "user" && auth?.student_id + "; " + auth?.student_info?.admission_semester + " ")} <br />{auth?.student_info?.department}</p>
                     </div>
                   </div>
                 </div>
