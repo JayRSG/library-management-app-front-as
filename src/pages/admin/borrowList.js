@@ -2,8 +2,6 @@ import Header from "@/components/Header"
 import AdminNav from "@/components/admin/AdminNav"
 import BorrowList from "@/components/admin/BorrowList"
 import { useAdmin } from "@/hooks/useAdmin"
-import { faEllipsisVertical, faPencil, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 import React from "react"
 
