@@ -43,7 +43,7 @@ const AdminNav = () => {
                 </Link>
               </li> */}
 
-              <li className={resolveActive(["/admin/users"], router.pathname)}>
+              <li className={resolveActive(["/admin/users", "/admin/register", "/user/register"], router.pathname)}>
 								<Link href='/admin/users'>
 									<FontAwesomeIcon icon={faUsers} />
 									<span>Users</span>

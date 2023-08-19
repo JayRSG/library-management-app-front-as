@@ -104,9 +104,9 @@ const LoginComponent = ({ type }) => {
           </div>
 
 
-          <div className='text-center register-link'>
+          {/* <div className='text-center register-link'>
             Don’t have an account? <Link href={`/${type}/register`}>Register Now</Link>
-          </div>
+          </div> */}
         </form>
       </div>
     )

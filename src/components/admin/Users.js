@@ -1,9 +1,11 @@
 import { useAllUsers } from "@/hooks/useAllUsers"
-import { faCircleLeft, faClockRotateLeft, faEllipsisVertical, faPencil, faTrash, } from "@fortawesome/free-solid-svg-icons"
+import { faClockRotateLeft, faEllipsisVertical, faPencil, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
+import { useRouter } from "next/router"
 
 const Users = () => {
+  const router = useRouter()
   const [queryParams, setQueryParams] = useState({
     account_type: "user"
   })
@@ -14,6 +16,7 @@ const Users = () => {
 
   const handleFilterChange = e => {
     setQueryParams({ ...queryParams, submit: false, [e.currentTarget.name]: e.currentTarget.value })
+    setShowRegister(true)
   }
 
   const deleteUser = (id) => {
@@ -25,8 +28,22 @@ const Users = () => {
       <div className='page-wrapper'>
         <div className='content'>
           <div className='row'>
-            <div className='col-sm-4 col-3'>
+            <div className='col-sm-4 col-md-6'>
               <h4 className='page-title'>{showUser ? "Users" : showAdmin && "Admins"}</h4>
+            </div>
+            <div className='col-sm-8 col-md-6 text-right m-b-20'>
+              <button className='btn btn btn-primary btn-rounded' style={{ float: "right" }} onClick={(e) => {
+                e.stopPropagation()
+                router.push("/user/register")
+              }}>
+                <FontAwesomeIcon icon={faPlus} /> Add User
+              </button>
+              <button className='btn btn btn-primary btn-rounded' style={{ float: "right", }} onClick={(e) => {
+                e.stopPropagation()
+                router.push("/admin/register")
+              }}>
+                <FontAwesomeIcon icon={faPlus} /> Add Admin
+              </button>
             </div>
           </div>
           <div className='row'>
@@ -62,7 +79,7 @@ const Users = () => {
                       {showUser && <th>Student_id</th>}
                       <th>Email</th>
                       {showUser && <th>Phone</th>}
-                      {showUser && <th>Department</th>}
+                      {showUser && <th>User Type</th>}
                       {showUser ? <th>Deleted</th> : showAdmin && <th>Active</th>}
                       <th>Action</th>
                     </tr>
@@ -72,10 +89,10 @@ const Users = () => {
                       <tr key={"user" + ind}>
                         <td>{ind + 1}</td>
                         <td>{user?.first_name + " " + user?.last_name}</td>
-                        {showUser && <td>{user?.student_id}</td>}
+                        {showUser && <td>{user?.student_id ?? "N/A"}</td>}
                         <td>{user?.email}</td>
                         {showUser && <td>{user?.phone}</td>}
-                        {showUser && <td>{user?.department}</td>}
+                        {showUser && <td>{user?.user_type}</td>}
                         {showUser ? <td>{user?.deleted ? "Yes" : "No"}</td> : showAdmin && <td>{user?.active ? "Yes" : "No"}</td>}
                         <td className='text-right'>
                           <div className='dropdown dropdown-action' style={{ position: "absolute" }}>
@@ -100,7 +117,8 @@ const Users = () => {
             </div>
           </div>
         </div>
-      </div >
+      </div>
+
     </>
   )
 }

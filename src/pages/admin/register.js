@@ -1,10 +1,14 @@
+import Header from "@/components/Header"
+import AdminNav from "@/components/admin/AdminNav"
 import AdminRegister from "@/components/auth/AdminRegister"
 import Image from "next/image"
 import Link from "next/link"
 
 const register = () => {
- return (
+  return (
     <>
+      <Header />
+      <AdminNav />
       <div className='main-wrapper  account-wrapper'>
         <div className='account-page'>
           <div className='account-center'>
