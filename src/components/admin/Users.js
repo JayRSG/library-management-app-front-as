@@ -16,7 +16,7 @@ const Users = () => {
 
   const handleFilterChange = e => {
     setQueryParams({ ...queryParams, submit: false, [e.currentTarget.name]: e.currentTarget.value })
-    setShowRegister(true)
+    // setShowRegister(true)
   }
 
   const deleteUser = (id) => {
