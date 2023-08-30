@@ -73,10 +73,10 @@ const BorrowList = (props) => {
 
             <label style={{ marginLeft: "10px" }}>ID: <input type="number" className="form-control" id="id" name="id" value={queryParams?.id} onChange={e => handleInputChange(e)} /></label>
 
-            <label style={{ marginLeft: "10px" }}>Book: <input type="number" className="form-control" id="book_id" name="book_id" value={queryParams?.book_id} onChange={e => handleInputChange(e)} /></label>
+            <label style={{ marginLeft: "10px" }}>Book: <input type="text" className="form-control" id="book_id" name="book_id" value={queryParams?.book_id} onChange={e => handleInputChange(e)} /></label>
 
 
-            <label style={{ marginLeft: "10px" }}>User: <input type="number" className="form-control" id="user_id" name="user_id" value={queryParams?.user_id} onChange={e => handleInputChange(e)} /></label>
+            <label style={{ marginLeft: "10px" }}>User: <input type="text" className="form-control" id="user_id" name="user_id" value={queryParams?.user_id} onChange={e => handleInputChange(e)} /></label>
 
             <span>
               <label style={{ marginLeft: "10px" }}>Date From: <input type="date" className="form-control" id="date_from" name="date_from" value={queryParams?.date_from} onChange={e => handleInputChange(e)} /></label>
