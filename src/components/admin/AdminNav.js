@@ -15,7 +15,7 @@ const AdminNav = () => {
             <ul>
               <li className='menu-title'>Main</li>
 
-              <li className={resolveActive(["/admin"], router.pathname)}>
+              <li className={resolveActive(["/admin", "/admin/adminEditProfile"], router.pathname)}>
                 <Link href='/admin'>
                   <FontAwesomeIcon icon={faDashboard} />
                   <span>Dashboard</span>

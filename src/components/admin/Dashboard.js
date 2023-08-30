@@ -30,7 +30,9 @@ const AdminDashboard = () => {
                           <span className='title'>Email:</span>
                           <span className='text'>
                             <a href='#'>{`${admin?.data?.email}`}</a>
+                            <span style={{fontSize: "12px", textDecoration: "none"}} className="m-l-40"> <span className="m-l-5 m-r-5">|</span> <a href="/admin/adminEditProfile">Edit Profile</a></span>
                           </span>
+                          
                         </li>
                       </ul>
                     </div>
