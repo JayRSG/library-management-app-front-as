@@ -6,6 +6,8 @@ const UserEditProfile = () => {
   const { data: userData, isLoading: userLoading, mutate: userMutate } = useUser({ middleware: "auth" })
   const user = userData?.data
 
+
+
   const [formData, setFormData] = useState({
     email: user?.email,
     password: "",
@@ -80,15 +82,15 @@ const UserEditProfile = () => {
                 <div className='col-md-6'>
                   <div className='form-group form-focus'>
                     <label className='focus-label'>Department</label>
-                    <input className='form-control floating' type='text' defaultValue={user?.department} disabled />
+                    <input className='form-control floating' type='text' defaultValue={user?.student_info?.department} disabled />
                   </div>
                 </div>
-                <div className='col-md-6'>
+                {/* <div className='col-md-6'>
                   <div className='form-group form-focus select-focus'>
                     <label className='focus-label'>Gender</label>
                     <input className='form-control floating' type='text' defaultValue={user?.gender == 1 ? "Male" : user?.gender == 2 ? "Female" : "Other"} disabled />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
