@@ -2,21 +2,27 @@ import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
 
+const PopupModal = (props) => {
+  const { title, showModal, handleCloseModal, data, saveButtonAction } = props
 
-const PopupModal = ({ showModal, handleCloseModal, message }) => {
   return (
-    <Modal show={showModal} onHide={handleCloseModal}>
+    <Modal show={showModal} onHide={handleCloseModal}
+      centered
+    >
       <Modal.Header closeButton>
-        <Modal.Title>My Modal</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {message} {/* Render the passed message prop */}
+        {data} {/* Render the passed data prop */}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCloseModal}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleCloseModal}>
+        <Button variant="primary" onClick={(e) => {
+          e.stopPropagation()
+          saveButtonAction(true)
+        }}>
           Save Changes
         </Button>
       </Modal.Footer>
