@@ -1,8 +1,11 @@
 import { useBorrows } from "@/hooks/useBorrows"
 import { post } from "@/lib/axios"
-import { faEllipsisVertical, faExpandArrowsAlt, faRecycle } from "@fortawesome/free-solid-svg-icons"
+import { faEllipsisVertical, faExpandArrowsAlt, faMoneyBill, faRecycle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
+import PopupModal from "../Modal"
+import FinePayment from "./FinePayment"
+import { useEffect } from "react"
 
 const BorrowList = (props) => {
   const [queryParams, setQueryParams] = useState({
@@ -16,8 +19,65 @@ const BorrowList = (props) => {
     submit: false
   })
 
+  const [showModal, setShowModal] = useState(false)
+  const [modalTitle, setModalTitle] = useState("Modal Title")
+  const [modalData, setModalData] = useState(false)
+  const [finePaymentData, setFinePaymentData] = useState(null)
+  const [saveButtonState, setSaveButtonState] = useState(false)
+
+  useEffect(() => {
+    if (finePaymentData) {
+      setModalData(
+        <FinePayment
+          user_id={finePaymentData?.user_id}
+          book_borrow_id={finePaymentData?.id}
+          book_name={finePaymentData?.name}
+          user_name={finePaymentData?.first_name + " " + finePaymentData?.last_name}
+          fine={finePaymentData?.late_fine_pending ?? finePaymentData?.fineInfo?.fine}
+          fined_days={finePaymentData?.fineInfo?.fined_days}
+          finePaymentSubmit={finePaymentSubmit}
+          payFinePressed={saveButtonState}
+        />
+      )
+    }
+  }, [finePaymentData, saveButtonState])
+
+
+  const handleShowModal = () => {
+    setShowModal(true)
+    setSaveButtonState(false)
+  }
+  const handleCloseModal = () => {
+    setShowModal(false)
+    setSaveButtonState(false)
+  }
+
+  const finePaymentSubmit = async (formData) => {
+    await post({
+      postendpoint: "/books/pay_fine",
+      postData: formData,
+      config: {
+        headers: {
+          "Content-Type": 'application/x-www-form-urlencoded'
+        }
+      }
+    }).then((res) => {
+      alert(res?.data?.message)
+      handleCloseModal()
+      borrowMutate()
+    }).catch(error => {
+      alert(error?.response?.data?.message)
+    })
+  }
+
+  const handleOpenModal = () => {
+    setModalTitle("Fine Payment")
+    handleShowModal();
+  };
+
   const { borrowData, borrowLoading, borrowMutate } = useBorrows({ params: queryParams?.submit && queryParams })
   const [fine, setFine] = useState([])
+  const [fineInfo, setFineInfo] = useState([])
 
   const handleInputChange = e => {
     setQueryParams({
@@ -31,6 +91,22 @@ const BorrowList = (props) => {
 
   const submitForm = async (e) => {
     borrowMutate()
+  }
+
+  // Reissue book once allowed
+  const reissueBook = async (data) => {
+    await post({
+      postendpoint: "/books/reissue_book", postData: { id: data?.id }, config: {
+        headers: {
+          "Content-Type": 'application/x-www-form-urlencoded'
+        }
+      }
+    }).then((res) => {
+      alert(res?.data?.message)
+      borrowMutate()
+    }).catch((error) => {
+      alert(error?.response?.data?.message)
+    })
   }
 
   const calcualteFine = async (ind, borrow_id, user_id) => {
@@ -47,9 +123,23 @@ const BorrowList = (props) => {
 
         return new_arr
       })
+
+      setFineInfo(fineInfo => {
+        const new_arr = fineInfo ? [...fineInfo] : []
+        new_arr[ind] = res?.data?.data?.fine_info ?? "N/A"
+
+        return new_arr
+      })
     }).catch(error => {
       setFine(fine => {
         const new_arr = fine ? [...fine] : []
+        new_arr[ind] = null
+
+        return new_arr
+      })
+
+      setFineInfo(fineInfo => {
+        const new_arr = fineInfo ? [...fineInfo] : []
         new_arr[ind] = null
 
         return new_arr
@@ -115,14 +205,18 @@ const BorrowList = (props) => {
                   <th>Name</th>
                   <th>Book Name</th>
                   <th>Borrow Date</th>
+                  <th>Reissue Date</th>
                   <th>Due Date</th>
                   <th>Issued By</th>
                   <th>Issuer Type</th>
                   <th>Return Date</th>
                   <th>Returned By</th>
                   <th>Type</th>
-                  <th>Late Fine</th>
+                  <th>Fine Paid</th>
+                  <th>Pending</th>
+                  <th>Total Fine</th>
                   <th>Fine Payment Date</th>
+                  <th>Fine Excused</th>
                   <th>Returned</th>
                   <th className='text-right'>Action</th>
                 </tr>
@@ -135,6 +229,7 @@ const BorrowList = (props) => {
                     <td>{data?.first_name + " " + data?.last_name}</td>
                     <td>{data?.name}</td>
                     <td>{data?.borrow_time}</td>
+                    <td>{data?.reissue_time}</td>
                     <td>{data?.due_time}</td>
                     <td>{data?.issue_user_type == "admin" ?
                       data?.issuer_admin_first_name + " " + data?.issuer_admin_last_name : data?.issue_user_type == "user" && data?.issuer_user_first_name + " " + data?.issuer_user_last_name}</td>
@@ -144,11 +239,14 @@ const BorrowList = (props) => {
                       data?.return_admin_first_name + " " + data?.return_admin_last_name :
                       data?.return_user_type == "user" && data?.return_user_first_name + " " + data?.return_user_last_name}</td>
                     <td>{data?.return_user_type}</td>
+                    <td>{fine[ind] ? data?.late_fine : ""}</td>
+                    <td>{fine[ind] ? (fine[ind] - data?.late_fine) : ""}</td>
                     <td>{fine[ind] ?? (<button className="btn btn-primary" onClick={(e) => {
                       e.stopPropagation()
                       calcualteFine(ind, data?.id, data?.user_id)
                     }}>Calculate Fine</button>)}</td>
                     <td>{data?.fine_payment_date ?? "N/A"}</td>
+                    <td>{data?.fine_excused ? "Excused" : "N/A"}</td>
                     <td>{data?.returned == 1 ? "Returned" : "Not Returned"}</td>
                     <td className='text-right'> {/* Action */}
                       <div className='dropdown dropdown-action' style={{ position: "absolute" }}>
@@ -156,8 +254,25 @@ const BorrowList = (props) => {
                           <FontAwesomeIcon icon={faEllipsisVertical} style={{ bottom: 10, position: "relative" }} />
                         </a>
                         <div className='dropdown-menu dropdown-menu-right'>
-                          <button className='dropdown-item' >
+                          <button className='dropdown-item' onClick={(e) => {
+                            e.stopPropagation()
+                            reissueBook(data)
+                          }}>
                             <FontAwesomeIcon icon={faExpandArrowsAlt} style={{ marginRight: 10 }} /> Extend
+                          </button>
+                          <button className='dropdown-item'
+                            onClick={e => {
+                              if (!fineInfo[ind]) {
+                                calcualteFine(ind, data?.id, data?.user_id)
+                              }
+
+                              if (fineInfo[ind]) {
+                                setFinePaymentData({ ...data, fineInfo: fineInfo[ind] })
+                                handleOpenModal()
+                              }
+                            }
+                            }>
+                            <FontAwesomeIcon icon={faMoneyBill} style={{ marginRight: 10 }} /> Pay Fine
                           </button>
                           <button className='dropdown-item'>
                             <FontAwesomeIcon icon={faRecycle} style={{ marginRight: 10 }} /> Return
@@ -172,6 +287,14 @@ const BorrowList = (props) => {
           </div>
         </div>
       </div>
+
+      <PopupModal
+        title={modalTitle}
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        data={modalData}
+        saveButtonAction={setSaveButtonState}
+      />
     </>
   )
 }
