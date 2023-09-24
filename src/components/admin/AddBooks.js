@@ -115,14 +115,14 @@ const AddBooks = () => {
                   </div>
                   {/* <div className="col-md-6 col-sm-6"></div> */}
                   <div className="row d-flex justify-content-center">
-                    <div className="col-sm-3 d-flex col-md-2 justify-content-center">
+                    {/* <div className="col-sm-3 d-flex col-md-2 justify-content-center">
                       <button name="" className="btn btn-success btn-block">
                         Scan Book
                       </button>
-                    </div>
+                    </div> */}
 
                     <div className="col-sm-2 col-md-2 d-flex justify-content-center">
-                      <button name="" className="btn btn-info btn-block" onClick={(e) => {
+                      <button name="" className="btn btn-danger btn-block" onClick={(e) => {
                         e.preventDefault()
                         resetForm()
                       }}>
