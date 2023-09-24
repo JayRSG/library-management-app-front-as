@@ -3,10 +3,10 @@ import { Button, Modal } from 'react-bootstrap'
 
 
 const PopupModal = (props) => {
-  const { title, showModal, handleCloseModal, data, saveButtonAction } = props
+  const { title, showModal, handleCloseModal, data, saveButtonAction, modalSize } = props
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal}
+    <Modal size={modalSize ? modalSize : null} show={showModal} onHide={handleCloseModal}
       centered
     >
       <Modal.Header closeButton>
@@ -16,7 +16,10 @@ const PopupModal = (props) => {
         {data} {/* Render the passed data prop */}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseModal}>
+        <Button variant="secondary" onClick={(e) => {
+          e.stopPropagation()
+          handleCloseModal()
+        }}>
           Close
         </Button>
         <Button variant="primary" onClick={(e) => {
