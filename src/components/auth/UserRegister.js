@@ -78,7 +78,7 @@ const UserRegister = () => {
         <div className='form-group'>
           <label>User type</label>
           <select name="user_type_id" onChange={handleInputChange} value={formData?.user_type_id} className='form-control select' required>
-            <option value="" selected disabled>Select User Type</option>
+            <option value="" disabled>Select User Type</option>
             <option value="1">Student</option>
             <option value="2">Teacher</option>
             <option value="3">Officials</option>
