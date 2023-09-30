@@ -93,11 +93,11 @@ const UserRegister = () => {
             <input type='text' name="student_id" onChange={handleInputChange} value={formData?.student_id} className='form-control' required />
           </div>
         }
-        <div className='form-group text-center'>
+        {/* <div className='form-group text-center'>
           <button className='btn btn-primary account-btn' type='submit'>
             Add fingerprint
           </button>
-        </div>
+        </div> */}
 
         <div className='form-group text-center'>
           <button className='btn btn-primary account-btn' type='submit' onClick={(e) => {

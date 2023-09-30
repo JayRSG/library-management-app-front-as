@@ -67,11 +67,11 @@ const AdminRegister = () => {
           <input type='password' name="password" onChange={handleInputChange} value={formData?.password} className='form-control' required />
         </div> */}
 
-        <div className='form-group text-center'>
+        {/* <div className='form-group text-center'>
           <button className='btn btn-primary account-btn' type='submit'>
             Add Fingerprint
           </button>
-        </div>
+        </div> */}
 
         <div className='form-group text-center'>
           <button className='btn btn-primary account-btn' name="submit" type='submit' onClick={(e) => {
