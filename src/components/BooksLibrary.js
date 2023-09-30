@@ -1,10 +1,11 @@
 import { useBooks } from "@/hooks/useBooks"
-import { faDashcube } from "@fortawesome/free-brands-svg-icons"
-import { faAdd, faEllipsisVertical, faPencil, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import PopupModal from "./Modal"
+import AddBooksStock from "./admin/AddBookStock"
+import { fetcher, post } from "@/lib/axios"
 
 const BooksLibrary = ({ auth_type, auth }) => {
   const [searchTerm, setSearchTerm] = useState({
@@ -16,16 +17,74 @@ const BooksLibrary = ({ auth_type, auth }) => {
 
   const [selectedBook, setSelectedBook] = useState(null);
 
-  const [showModal, setShowModal] = useState(false);
-  const [modalData, setModalData] = useState(false);
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const [showModal, setShowModal] = useState(false)
+  const [modalTitle, setModalTitle] = useState("Add Book Stock")
+  const [modalData, setModalData] = useState()
+  const [saveButtonState, setSaveButtonState] = useState(false)
+  const [selectedBookInfo, setSelectedBookInfo] = useState(null)
+
+  const handleShowModal = () => {
+    setShowModal(true)
+    setSaveButtonState(false)
+  }
+  const handleCloseModal = () => {
+    setShowModal(false)
+    setModalData(null)
+    setSaveButtonState(false)
+  }
 
   const handleOpenModal = () => {
-    setModalData('This is the message passed to the modal.');
+    setModalTitle("Add Book Stock")
     handleShowModal();
   };
 
+  const addBooksStockAction = async (rfidData) => {
+    await post({
+      postendpoint: "/books/add_book_stock",
+      postData: {
+        book_id: selectedBookInfo?.id,
+        rfid: rfidData
+      },
+      config: {
+        headers: {
+          "Content-Type": 'application/x-www-form-urlencoded'
+        }
+      }
+    }).then((res) => {
+      alert(res?.data?.message)
+      handleCloseModal()
+      bookMutate()
+    }).catch(error => {
+      alert(error?.response?.data?.message)
+    })
+  }
+
+  const updateBookStock = async (book_id) => {
+    await fetcher({ url: '/books/update_book_stock', params: { book_id: book_id } })
+      .then(res => {
+        bookMutate()
+      })
+      .catch(error => {
+        alert(error?.response?.data?.message)
+      })
+  }
+
+  useEffect(() => {
+    if (selectedBookInfo)
+      setModalData(
+        <AddBooksStock
+          key={1}
+          book_id={selectedBookInfo?.id}
+          bookName={selectedBookInfo?.name}
+          edition={selectedBookInfo?.edition}
+          author={selectedBookInfo?.author}
+          publisher={selectedBookInfo?.publisher}
+          stkQuantity={selectedBookInfo?.quantity}
+          submitButtonAction={addBooksStockAction}
+          saveButtonState={saveButtonState}
+        />
+      )
+  }, [selectedBookInfo, saveButtonState])
 
   const handleRadioChange = (e) => {
     setSelectedBook(e.target.value);
@@ -56,7 +115,7 @@ const BooksLibrary = ({ auth_type, auth }) => {
                 name="search_term"
                 onChange={searchTermChangeHandler}
                 type="text"
-                autoFocus=""
+                autoFocus={true}
                 className="form-control text-center"
                 placeholder="Enter Book Name, Author, Publisher, ISBN, Call Number"
               />
@@ -104,7 +163,7 @@ const BooksLibrary = ({ auth_type, auth }) => {
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Remaining Qty</th>
-                    {auth_type == "admin" && <th>Action</th>}
+                    {auth_type == "admin" && <th className="text-center">Action</th>}
                   </tr>
                 </thead>
 
@@ -138,7 +197,17 @@ const BooksLibrary = ({ auth_type, auth }) => {
                         <td>{data?.remaining_qty}</td>
                         {
                           auth_type == "admin" &&
-                          <td><button className="btn btn-primary" onClick={handleOpenModal}>Add Books</button></td>
+                          <td>
+                            <button className="btn btn-success m-r-5" onClick={(e) => {
+                              e.stopPropagation()
+                              updateBookStock(data?.id)
+                            }}>Update Stock</button>
+                            <button className="btn btn-primary" onClick={(e) => {
+                              e.stopPropagation()
+                              setSelectedBookInfo({ ...data })
+                              handleOpenModal()
+                            }}>Add Books</button>
+                          </td>
                         }
                       </tr>
                     ))
@@ -149,7 +218,14 @@ const BooksLibrary = ({ auth_type, auth }) => {
           </div>
         </div>
       </div>
-      <PopupModal showModal={showModal} handleCloseModal={handleCloseModal} data={modalData} />
+      <PopupModal
+        title={modalTitle}
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        data={modalData}
+        saveButtonAction={setSaveButtonState}
+        modalSize='lg'
+      />
 
     </div>
   )
