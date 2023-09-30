@@ -1,8 +1,12 @@
 import { useAllUsers } from "@/hooks/useAllUsers"
-import { faClockRotateLeft, faEllipsisVertical, faPencil, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { faClockRotateLeft, faEllipsisVertical, faFingerprint, faPencil, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 import { useRouter } from "next/router"
+import PopupModal from "../Modal"
+import EditFingerPrint from "./EditFingerprint"
+import { useEffect } from "react"
+import { post } from "@/lib/axios"
 
 const Users = () => {
   const router = useRouter()
@@ -12,16 +16,73 @@ const Users = () => {
   const showUser = queryParams?.account_type == "user";
   const showAdmin = queryParams?.account_type == "admin";
 
+  const [showModal, setShowModal] = useState(false)
+  const [modalTitle, setModalTitle] = useState("Add Book Stock")
+  const [modalData, setModalData] = useState()
+  const [saveButtonState, setSaveButtonState] = useState(false)
+  const [userForFinger, setUserForFinger] = useState(null)
+
+  const handleShowModal = () => {
+    setShowModal(true)
+    setSaveButtonState(false)
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false)
+    setModalData(null)
+    setSaveButtonState(false)
+    setUserForFinger(null)
+  }
+
+  const handleOpenModal = () => {
+    setModalTitle("Fingerprint Management")
+    handleShowModal();
+  };
+
   const { data: allUsers, isLoading, mutate } = useAllUsers({ params: queryParams?.submit ? queryParams : "" })
 
-  const handleFilterChange = e => {
+  function handleFilterChange(e) {
     setQueryParams({ ...queryParams, submit: false, [e.currentTarget.name]: e.currentTarget.value })
     // setShowRegister(true)
   }
 
-  const deleteUser = (id) => {
+  function deleteUser(id) {
     alert("User #" + id + " Deleted/Deactivated");
   }
+
+  async function saveFingerPrintAction(user_id, fingerprint_id) {
+    await post({
+      postendpoint: "user/update_fingerprint",
+      postData: { user_id: user_id, fingerprint_id: fingerprint_id, account_type: queryParams?.account_type },
+      config: {
+        headers: {
+          "Content-Type": 'application/x-www-form-urlencoded'
+        }
+      }
+    }).then((res) => {
+      alert(res?.data?.message)
+      mutate()
+      handleCloseModal()
+    }).catch(error => {
+      alert(error?.response?.data?.message)
+    })
+  }
+
+  useEffect(() => {
+    if (userForFinger) {
+      setModalData(
+        <EditFingerPrint
+          userData={userForFinger}
+          userType={queryParams?.account_type}
+          submitButtonAction={saveFingerPrintAction}
+          saveButtonState={saveButtonState}
+          handleCloseModal={handleCloseModal}
+        />
+      )
+
+      handleOpenModal()
+    }
+  }, [userForFinger, saveButtonState])
 
   return (
     <>
@@ -101,10 +162,17 @@ const Users = () => {
                             </a>
                             <div className='dropdown-menu dropdown-menu-right'>
                               <button className='dropdown-item' onClick={(e) => {
+                                setUserForFinger(user)
+                                // handleOpenModal()
+                              }}>
+                                <FontAwesomeIcon icon={faFingerprint} style={{ marginRight: 10 }} /> Fingerprint
+                              </button>
+                              <button className='dropdown-item' onClick={(e) => {
                                 confirm("Are you sure you want to " + (showAdmin ? "deactivate" : showUser && "delete")) && deleteUser(user?.id)
                               }}>
                                 <FontAwesomeIcon icon={faPencil} style={{ marginRight: 10 }} /> {showUser ? "Delete" : showAdmin && "Deactivate"}
                               </button>
+
                             </div>
                           </div>
                         </td>
@@ -119,6 +187,13 @@ const Users = () => {
         </div>
       </div>
 
+      <PopupModal
+        title={modalTitle}
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        data={modalData}
+        saveButtonAction={setSaveButtonState}
+      />
     </>
   )
 }
