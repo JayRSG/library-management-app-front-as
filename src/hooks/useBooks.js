@@ -1,4 +1,4 @@
-import { fetcher } from '@/lib/axios'
+import { fetcher, post } from '@/lib/axios'
 import useSWR from 'swr'
 
 export const useBooks = ({ params }) => {
@@ -14,3 +14,26 @@ export const useBooks = ({ params }) => {
   }
 }
 
+export const useBookRFID = ({ params }) => {
+  const { data, isLoading, mutate } = useSWR(
+    Object.keys(params).length > 0 && {
+      postendpoint: '/books/get_book_rfids',
+      postData: { ...params },
+      config: {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }
+    }, post,
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false
+    }
+  )
+
+  return {
+    data,
+    isLoading,
+    mutate
+  }
+}

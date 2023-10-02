@@ -1,8 +1,7 @@
 import { useAllUsers } from "@/hooks/useAllUsers"
-import { useBooks } from "@/hooks/useBooks"
+import { useBookRFID, useBooks } from "@/hooks/useBooks"
 import { useDeviceData } from "@/hooks/useDeviceWS"
-import { useUser } from "@/hooks/useUser"
-import { fetcher } from "@/lib/axios"
+import { fetcher, post } from "@/lib/axios"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
@@ -15,20 +14,50 @@ const IssueBook = (props) => {
     id: ""
   })
 
-  const { bookdata, bookLoading } = useBooks({ params: { id: id } })
-  const [scanData, setScanData] = useState(null)
+  const [formData, setFormData] = useState({
+    user_id: "",
+    rfid: ""
+  })
 
-  const { deviceData: fingerPrintData, isScanning: fingerPrintScanning, communicateDevice: scanFingerPrint } = useDeviceData()
-  const { deviceData: rfidData, isScanning: rfidScanning, communicateDevice: scanRfid } = useDeviceData()
-
+  const { deviceData: fingerPrintData, isScanning: fingerPrintScanning, socket: fingerSocket, communicateDevice: scanFingerPrint } = useDeviceData()
+  const { deviceData: rfidData, isScanning: rfidScanning, socket: rfidSocket, communicateDevice: scanRfid } = useDeviceData()
 
   const [showMessage, setShowMessage] = useState("")
-  const [foundFingerprint, setFoundFingerprint] = useState(null)
 
-  const { data: borrowerData, isLoading, mutate } = useAllUsers({ params: foundFingerprint && queryParams?.account_type == "user" ? queryParams : "" })
+  // Scan target Data
+  const [foundFingerprint, setFoundFingerprint] = useState(null)
+  const [rfidCard, setRfidCard] = useState(null)
+  const [disableSubmitState, setDisableSubmitState] = useState(true)
+
+  // Fetches user data based on fingerprint
+  const { data: borrowerData, isLoading, mutate } = useAllUsers({ params: foundFingerprint && queryParams?.account_type == "admin" ? queryParams : "" })
+
+  // Fetches book id based on scanned book
+  const { data: rfidBookId, isLoading: loadingRfidBookId, mutate: mutateRfidBookId } = useBookRFID({ params: rfidCard ? { rfid: rfidCard } : {} })
+  const { bookdata, bookLoading } = useBooks({ params: { id: rfidBookId && rfidBookId?.data?.data?.book_id == id ? rfidBookId?.data?.data?.book_id : id ? id : "" } })
 
   useEffect(() => {
-    console.log(rfidData)
+    if (rfidData) {
+      let data = null
+      if (typeof rfidData == "string") {
+        data = JSON.parse(rfidData)
+      } else {
+        data = rfidData
+      }
+      setShowMessage(data)
+
+      if (data?.message == "Card Read") {
+        setRfidCard(data?.id)
+
+        var t = setTimeout(() => {
+          setShowMessage({ ...showMessage, message: "" })
+        }, 5000);
+      }
+    }
+
+    return () => {
+      clearTimeout(t)
+    }
   }, [rfidData])
 
   // extract fingerprint data from the received json string and set the display message
@@ -40,13 +69,70 @@ const IssueBook = (props) => {
       } else {
         data = fingerPrintData
       }
-      setShowMessage(data)
 
       if (data?.message == "Fingerprint matched") {
         setFoundFingerprint(data?.id)
+      } else {
+        setShowMessage(data)
       }
     }
   }, [fingerPrintData])
+
+  useEffect(() => {
+    if (!id) {
+      router.push("/booksLibrary")
+    } else if (rfidBookId?.data?.data?.book_id != id) {
+
+      if (rfidData && showMessage?.message == "Card Read") {
+        setShowMessage({ ...showMessage, message: "Book mismatch" })
+      }
+
+      setDisableSubmitState(true)
+    } else {
+      setDisableSubmitState(false)
+    }
+  }, [rfidData, rfidBookId, id])
+
+  // prints name of scanned borrower
+  const showName = () => {
+    if (auth_type == "admin" && fingerPrintData && borrowerData?.data[0]) {
+      return (
+        borrowerData?.data[0]?.first_name + " " + borrowerData?.data[0]?.last_name
+      )
+    } else if (auth_type == "user") {
+      return (
+        auth?.first_name + " " + auth?.last_name
+      )
+    } else if (queryParams?.account_type == "admin") {
+      return "[Scan users only]"
+    }
+
+    return "Scan Fingerprint"
+  }
+
+  // show semester, id, dept of scanned borrower
+  const showBorrowerIdSemDept = () => {
+    if (auth_type == "admin" && fingerPrintData && borrowerData?.data[0]) {
+      return (
+        <>
+          {borrowerData?.data[0]?.student_id}; {borrowerData?.data[0]?.student_info?.admission_semester};<br />
+          {borrowerData?.data[0]?.student_info?.department}
+        </>
+      )
+    } else if (auth_type == "user") {
+      return (
+        <>
+          {auth?.student_id}; {auth?.student_info?.admission_semester}; <br />
+          {auth?.student_info?.department}
+        </>
+      )
+    }
+    else if (queryParams?.account_type == "admin") {
+      return "[Scan users only]"
+    }
+
+    return "Scan Fingerprint"
+  }
 
   // Search for fingerprint data for any user
   async function searchFingerprint() {
@@ -73,49 +159,41 @@ const IssueBook = (props) => {
     }
   }, [foundFingerprint])
 
+  const disableSubmit = () => {
+    if (auth_type == "user" && !disableSubmitState) {
+      return false
+    }
+    else if (auth_type == "admin" && !disableSubmitState && foundFingerprint) {
+      return false
+    }
+    return true
+  }
+
+  useEffect(() => {
+    if (auth_type == "user" && rfidCard) {
+      setFormData({ ...formData, user_id: auth?.id, rfid: rfidCard })
+    } else if (auth_type == "admin" && rfidCard) {
+      if (borrowerData?.data[0]) {
+        setFormData({ ...formData, user_id: borrowerData?.data[0]?.id, rfid: rfidCard })
+      }
+    }
+  }, [auth, auth_type, rfidCard, borrowerData])
+
   const handleSubmit = (e) => {
-
-  }
-
-  // prints name of scanned borrower
-  const showName = () => {
-    if (auth_type == "admin" && fingerPrintData && borrowerData?.data[0]) {
-      return (
-        borrowerData?.data[0]?.first_name + " " + borrowerData?.data[0]?.last_name
-      )
-    } else if (auth_type == "user") {
-      return (
-        auth?.first_name + " " + auth?.last_name
-      )
-    } else if (queryParams?.account_type == "admin") {
-      return "[Unauthorized user, scan users only]"
-    }
-
-    return "Scan Fingerprint"
-  }
-
-  // show semester, id, dept of scanned borrower
-  const showBorrowerIdSemDept = () => {
-    if (auth_type == "admin" && fingerPrintData && borrowerData?.data[0]) {
-      return (
-        <>
-          {borrowerData?.data[0]?.student_id}; {borrowerData?.data[0]?.student_info?.admission_semester};<br />
-          {borrowerData?.data[0]?.student_info?.department}
-        </>
-      )
-    } else if (auth_type == "user") {
-      return (
-        <>
-          {auth?.student_id}; {auth?.student_info?.admission_semester}; <br />
-          {auth?.student_info?.department}
-        </>
-      )
-    }
-    else if (queryParams?.account_type == "admin") {
-      return "[Unauthorized user, scan users only]"
-    }
-
-    return "Scan Fingerprint"
+    console.log(formData);
+    post({
+      postendpoint: "/books/borrow_book", postData: formData, config:
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }
+    }).then(res => {
+      alert(res?.data?.message)
+      router.push("/booksLibrary");
+    }).catch(error => {
+      alert(error?.response?.data?.message)
+    })
   }
 
   return (
@@ -174,13 +252,13 @@ const IssueBook = (props) => {
                   <div className='col-md-6'>
                     <div className='form-group'>
                       <label>Book Name</label>
-                      <p>{bookdata?.data?.name + " "} {!scanData && "[Scan Book]"}</p>
+                      <p>{(id || rfidBookId) ? bookdata?.data?.name + " " : ""} {!rfidBookId && "[Scan Book]"}</p>
                     </div>
                   </div>
                   <div className={`col-sm-3 ${rfidScanning ? 'col-md-3' : 'col-md-2'}`}>
                     <button type="button" name="" className="btn btn-success btn-block" onClick={(e) => {
                       e.stopPropagation()
-                      scanRfid({ command: "read", id: "123" })
+                      scanRfid({ command: "read" })
                     }}>
                       Scan Book
                     </button>
@@ -194,14 +272,16 @@ const IssueBook = (props) => {
                     }}>
                       Scan Fingerprint
                     </button>
+
                     {fingerPrintScanning ? <span className="m-l-5">Scanning FingerPrint</span> : ""}
-                  </div>}
-                  <div className="col-md-3" style={{ marginTop: "5px" }}>{!fingerPrintScanning && showMessage ? showMessage?.message : ""}</div>
+                  </div>
+                  }
+                  <div className="col-md-3" style={{ marginTop: "5px" }}>{!fingerPrintScanning && !rfidScanning && showMessage ? showMessage?.message : ""}</div>
 
                 </div>
 
                 <div className='m-t-20 text-center'>
-                  <button type="submit" className='btn btn-primary submit-btn' disabled={!scanData}>Issue Book</button>
+                  <button type="submit" className='btn btn-primary submit-btn' onClick={(e) => { e.stopPropagation() }} disabled={disableSubmit() && disableSubmitState}>Issue Book</button>
                 </div>
               </form>
             </div>
