@@ -27,7 +27,7 @@ export const useDeviceData = () => {
         // socket.close(); // Close the WebSocket on error
       };
     }
-  }, [wsServerURL]);
+  }, []);
 
   function communicateDevice(commands) {
     // Send a message to the server to request RFID data
