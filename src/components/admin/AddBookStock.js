@@ -1,43 +1,46 @@
+import { useBookRFID } from '@/hooks/useBooks';
 import { useDeviceData } from '@/hooks/useDeviceWS';
 import { post } from '@/lib/axios';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import useSWR from 'swr';
 
 const AddBooksStock = (bookInfo) => {
 
   const { book_id, bookName, edition, author, publisher, stkQuantity, submitButtonAction, saveButtonState } = bookInfo
 
-  const { deviceData, isScanning, communicateDevice } = useDeviceData()
+  const { deviceData, isScanning, socket, communicateDevice } = useDeviceData()
 
   const [existingRfid, setExistingRfid] = useState([]);
   const [rfidNumbers, setRfidNumbers] = useState([]);
   const [rfidInput, setRfidInput] = useState('');
+  const [showMessage, setShowMessage] = useState("")
+
+
+  // Book Rfid data fetch
+  const { data: bookRfidData, isLoading, mutate } = useBookRFID({ params: { book_id: book_id } });
 
   useEffect(() => {
-    post({
-      postendpoint: "/books/get_book_rfids",
-      postData: { book_id: book_id },
-      config: {
-        headers: {
-          "Content-Type": 'application/x-www-form-urlencoded'
-        }
-      }
-    })
-      .then((res) => {
-        setExistingRfid([...res?.data?.data?.map((data) => {
-          if (!existingRfid.includes(data?.rfid)) {
-            return data?.rfid
-          }
-        })])
-      })
-      .catch(error => {
-        throw error
-      })
-  }, [book_id])
+    if (bookRfidData) {
+      setExistingRfid([
+        ...bookRfidData?.data?.data?.map((data) => data?.rfid)
+      ])
+    }
+  }, [bookRfidData])
 
   useEffect(() => {
     if (deviceData) {
-      setRfidInput(deviceData?.rfid)
+      let data = null
+      if (typeof deviceData == "string") {
+        data = JSON.parse(deviceData)
+      } else {
+        data = deviceData
+      }
+      setShowMessage(data)
+
+      if (data?.message == "Card Read") {
+        setRfidInput(data?.id)
+      }
     }
   }, [deviceData])
 
@@ -146,12 +149,12 @@ const AddBooksStock = (bookInfo) => {
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  communicateDevice("register")
+                  communicateDevice({ command: "read" })
                 }}
               >
                 Scan Book
               </button>
-              <span className='m-l-40 text-danger'>{isScanning ? "Scan Now" : ""}</span>
+              <span className='m-l-40 text-danger'>{isScanning ? "Scan Now" : showMessage && showMessage?.message || ""}</span>
             </div>
           </form>
 
