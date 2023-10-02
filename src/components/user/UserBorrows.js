@@ -92,6 +92,7 @@ const UserBorrows = (props) => {
           <div className="col-sm-3 col-md-6">
             <label style={{ marginRight: "20px" }} htmlFor="returned">Date From
               <input
+                style={{ marginLeft: "10px" }}
                 name="date_from"
                 id="date_from"
                 type="date"
@@ -99,6 +100,7 @@ const UserBorrows = (props) => {
             </label>
             <label htmlFor="returned">Date To
               <input
+                style={{ marginLeft: "10px" }}
                 name="date_to"
                 id="date_to"
                 type="date"
