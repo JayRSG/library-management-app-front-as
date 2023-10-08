@@ -32,8 +32,38 @@ export const useBookRFID = ({ params }) => {
   )
 
   return {
-    data,
+    data: data?.data,
     isLoading,
     mutate
   }
+}
+
+export const returnBookAction = async (data, mutate = null) => {
+  return await post({
+    postendpoint: "/books/return_book",
+    postData: data,
+    config: {
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded"
+      }
+    }
+  }).then(res => {
+    if (mutate) {
+      mutate()
+    }
+    return res
+  })
+}
+
+export const updateBookStock = async (book_id, bookMutate = null) => {
+  await fetcher({ url: '/books/update_book_stock', params: { book_id: book_id } })
+    .then(res => {
+      alert("Updated Stock Fetched")
+      if (bookMutate != undefined) {
+        bookMutate()
+      }
+    })
+    .catch(error => {
+      alert(error?.response?.data?.message)
+    })
 }

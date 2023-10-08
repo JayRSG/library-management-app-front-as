@@ -1,4 +1,4 @@
-import { useBooks } from "@/hooks/useBooks"
+import { updateBookStock, useBooks } from "@/hooks/useBooks"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
@@ -59,17 +59,7 @@ const BooksLibrary = ({ auth_type, auth }) => {
     })
   }
 
-  const updateBookStock = async (book_id) => {
-    await fetcher({ url: '/books/update_book_stock', params: { book_id: book_id } })
-      .then(res => {
-        alert("Updated Stock Fetched")
-        bookMutate()
-      })
-      .catch(error => {
-        alert(error?.response?.data?.message)
-      })
-  }
-
+  
   useEffect(() => {
     if (selectedBookInfo)
       setModalData(
@@ -201,7 +191,7 @@ const BooksLibrary = ({ auth_type, auth }) => {
                           <td>
                             <button className="btn btn-success m-r-5" onClick={(e) => {
                               e.stopPropagation()
-                              updateBookStock(data?.id)
+                              updateBookStock(data?.id, bookMutate)
                             }}>Update Stock</button>
                             <button className="btn btn-primary" onClick={(e) => {
                               e.stopPropagation()
