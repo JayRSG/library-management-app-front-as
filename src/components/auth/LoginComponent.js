@@ -1,14 +1,19 @@
 import { useAdmin } from "@/hooks/useAdmin"
+import { useDeviceData } from "@/hooks/useDeviceWS"
 import { useUser } from "@/hooks/useUser"
 import { post } from "@/lib/axios"
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect } from "react"
 import { useState } from "react"
 
 const LoginComponent = ({ type }) => {
+  const { deviceData: fingerprintData, isScanning, socket, communicateDevice } = useDeviceData()
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    fingerprint_id: "",
     user_type: type
   })
 
@@ -19,6 +24,25 @@ const LoginComponent = ({ type }) => {
     middleware: "guest", redirectIfAuthenticated: "/user"
   })
 
+
+  const [showMessage, setShowMessage] = useState("")
+
+  useEffect(() => {
+    if (fingerprintData) {
+      let data = null
+      if (typeof fingerprintData == "string") {
+        data = JSON.parse(fingerprintData)
+      } else {
+        data = fingerprintData
+      }
+      setShowMessage(data)
+
+      if (data?.message == "Fingerprint Matched" && data?.id) {
+        setFormData({ ...formData, fingerprint_id: data?.id })
+      }
+    }
+  }, [fingerprintData])
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -26,8 +50,10 @@ const LoginComponent = ({ type }) => {
     })
   }
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault()
+  const handleFormSubmit = async (e = null) => {
+    if (e) {
+      e.preventDefault()
+    }
     await post({
       postendpoint: "/login", postData: formData, config: {
         headers: {
@@ -44,6 +70,13 @@ const LoginComponent = ({ type }) => {
         alert(error?.response?.data?.message)
       })
   }
+
+  useEffect(() => {
+    if (showMessage?.message == "Fingerprint Matched" && formData?.fingerprint_id > 0) {
+      handleFormSubmit()
+    }
+  }, [formData?.fingerprint_id, showMessage])
+
 
   if (user || admin) {
     return "Loading..."
@@ -98,10 +131,16 @@ const LoginComponent = ({ type }) => {
           <div className="text-center">Or</div>
 
           <div className='form-group text-center'>
-            <button type='submit' className='btn btn-primary account-btn'>
+            <button type='submit' className='btn btn-primary account-btn' onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              communicateDevice({ command: "search" })
+            }}>
               Scan Fingerprint
             </button>
           </div>
+
+          <div className="d-flex justify-content-center">{showMessage?.message}</div>
 
 
           {/* <div className='text-center register-link'>
