@@ -5,7 +5,7 @@ import useSWR from 'swr'
 export const useAllUsers = ({ params } = {}) => {
   const router = useRouter()
 
-  const { data, error, isLoading, mutate } = useSWR(params?.account_type != "" && { url: '/admin/users', params: params }, fetcher, {
+  const { data, error, isLoading, mutate } = useSWR(params?.account_type != "" && params?.submit && { url: '/admin/users', params: params }, fetcher, {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
     dedupingInterval: 5000
