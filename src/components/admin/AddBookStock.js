@@ -23,7 +23,7 @@ const AddBooksStock = (bookInfo) => {
   useEffect(() => {
     if (bookRfidData) {
       setExistingRfid([
-        ...bookRfidData?.data?.data?.map((data) => data?.rfid)
+        ...bookRfidData?.data?.map((data) => data?.rfid)
       ])
     }
   }, [bookRfidData])
