@@ -6,8 +6,11 @@ import { useState } from "react"
 import PopupModal from "../Modal"
 import FinePayment from "./FinePayment"
 import { useEffect } from "react"
+import ReturnBook from "../ReturnBook"
+import { useDeviceData } from "@/hooks/useDeviceWS"
+import { useBookRFID } from "@/hooks/useBooks"
 
-const BorrowList = (props) => {
+const BorrowList = () => {
   const [queryParams, setQueryParams] = useState({
     id: "",
     all: true,
@@ -19,11 +22,42 @@ const BorrowList = (props) => {
     submit: false
   })
 
+  const { deviceData: rfidData, isScanning, socket, communicateDevice, } = useDeviceData()
+  const [rfid, setRfid] = useState(null)
+  const { data: rfidBookId, isLoading, mutate } = useBookRFID({ params: { rfid: rfid } })
+
   const [showModal, setShowModal] = useState(false)
   const [modalTitle, setModalTitle] = useState("Modal Title")
   const [modalData, setModalData] = useState(false)
   const [finePaymentData, setFinePaymentData] = useState(null)
   const [saveButtonState, setSaveButtonState] = useState(false)
+
+  const [showMessage, setShowMessage] = useState("")
+
+  const [bookReturnData, setBookReturnData] = useState({
+    borrow_data: "",
+  })
+
+  const { borrowData, borrowLoading, borrowMutate } = useBorrows({ params: queryParams?.submit && queryParams })
+  const [fine, setFine] = useState([])
+  const [fineInfo, setFineInfo] = useState([])
+
+  useEffect(() => {
+    if (rfidData) {
+      let data = null
+      if (typeof rfidData == "string") {
+        data = JSON.parse(rfidData)
+      } else {
+        data = rfidData
+      }
+      setShowMessage(data)
+
+      if (data?.message == "Card Read") {
+        setRfid(data?.id)
+      }
+    }
+  }, [rfidData])
+
 
   useEffect(() => {
     if (finePaymentData) {
@@ -42,6 +76,32 @@ const BorrowList = (props) => {
     }
   }, [finePaymentData, saveButtonState])
 
+  useEffect(() => {
+    if (bookReturnData?.borrow_data) {
+      setModalData(
+        <ReturnBook
+          bookBorrowData={bookReturnData?.borrow_data}
+          saveButtonState={saveButtonState}
+          handleCloseModal={handleCloseModal}
+          borrowMutate={borrowMutate}
+        />
+      )
+
+      handleOpenModal()
+    }
+  }, [bookReturnData, saveButtonState])
+
+  useEffect(() => {
+    if (rfidBookId) {
+      setQueryParams({ ...queryParams, book_id: rfidBookId?.data?.book_id })
+    }
+  }, [rfidBookId?.data?.book_id])
+
+  useEffect(() => {
+    if (queryParams) {
+      borrowMutate()
+    }
+  }, [queryParams])
 
   const handleShowModal = () => {
     setShowModal(true)
@@ -74,10 +134,6 @@ const BorrowList = (props) => {
     setModalTitle("Fine Payment")
     handleShowModal();
   };
-
-  const { borrowData, borrowLoading, borrowMutate } = useBorrows({ params: queryParams?.submit && queryParams })
-  const [fine, setFine] = useState([])
-  const [fineInfo, setFineInfo] = useState([])
 
   const handleInputChange = e => {
     setQueryParams({
@@ -147,7 +203,6 @@ const BorrowList = (props) => {
     })
   }
 
-
   return (
     <>
       <div className='row'>
@@ -161,12 +216,16 @@ const BorrowList = (props) => {
 
             <span style={{ margin: "0px 10px" }} className="vr"></span>
 
-            <label style={{ marginLeft: "10px" }}>ID: <input type="number" className="form-control" id="id" name="id" value={queryParams?.id} onChange={e => handleInputChange(e)} /></label>
+            {/* <label style={{ marginLeft: "10px" }}>ID: <input type="number" className="form-control" id="id" name="id" value={queryParams?.id} onChange={e => handleInputChange(e)} /></label> */}
 
-            <label style={{ marginLeft: "10px" }}>Book: <input type="text" className="form-control" id="book_id" name="book_id" value={queryParams?.book_id} onChange={e => handleInputChange(e)} /></label>
+            <label style={{ marginLeft: "10px" }}> Book: {showMessage?.message != "Card Read" && showMessage?.message}<input onClick={(e) => {
+              e.stopPropagation()
+              communicateDevice({ command: "read" })
+            }} type="button" className="form-control bg-info text-white rounded" id="book_id" name="book_id" value="Scan Book" /></label>
 
+            <label style={{ marginLeft: "10px", marginTop: "20px" }}><input type="text" placeholder="Book ID" className="form-control" id="book_id" name="book_id" value={queryParams?.book_id} onChange={e => handleInputChange(e)} /></label>
 
-            <label style={{ marginLeft: "10px" }}>User: <input type="text" className="form-control" id="user_id" name="user_id" value={queryParams?.user_id} onChange={e => handleInputChange(e)} /></label>
+            <label style={{ marginLeft: "10px" }}>User: <input placeholder="Email, Phone or Student ID" type="text" className="form-control" id="user_id" name="user_id" value={queryParams?.user_id} onChange={e => handleInputChange(e)} /></label>
 
             <span>
               <label style={{ marginLeft: "10px" }}>Date From: <input type="date" className="form-control" id="date_from" name="date_from" value={queryParams?.date_from} onChange={e => handleInputChange(e)} /></label>
@@ -240,7 +299,7 @@ const BorrowList = (props) => {
                       data?.return_user_type == "user" && data?.return_user_first_name + " " + data?.return_user_last_name}</td>
                     <td>{data?.return_user_type}</td>
                     <td>{fine[ind] ? data?.late_fine : ""}</td>
-                    <td>{fine[ind] ? (fine[ind] - data?.late_fine) : ""}</td>
+                    <td>{fine[ind] && data?.late_fine ? (fine[ind] - data?.late_fine) : ""}</td>
                     <td>{fine[ind] ?? (<button className="btn btn-primary" onClick={(e) => {
                       e.stopPropagation()
                       calcualteFine(ind, data?.id, data?.user_id)
@@ -274,7 +333,10 @@ const BorrowList = (props) => {
                             }>
                             <FontAwesomeIcon icon={faMoneyBill} style={{ marginRight: 10 }} /> Pay Fine
                           </button>
-                          <button className='dropdown-item'>
+                          <button className='dropdown-item' onClick={(e) => {
+                            e.stopPropagation()
+                            setBookReturnData({ borrow_data: data })
+                          }}>
                             <FontAwesomeIcon icon={faRecycle} style={{ marginRight: 10 }} /> Return
                           </button>
                         </div>
@@ -286,7 +348,7 @@ const BorrowList = (props) => {
             </table>
           </div>
         </div>
-      </div>
+      </div >
 
       <PopupModal
         title={modalTitle}
