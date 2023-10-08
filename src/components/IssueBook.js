@@ -11,7 +11,8 @@ const IssueBook = (props) => {
   const { auth, auth_type } = props
   const [queryParams, setQueryParams] = useState({
     account_type: "",
-    id: ""
+    id: "",
+    submit: false
   })
 
   const [formData, setFormData] = useState({
@@ -30,11 +31,11 @@ const IssueBook = (props) => {
   const [disableSubmitState, setDisableSubmitState] = useState(true)
 
   // Fetches user data based on fingerprint
-  const { data: borrowerData, isLoading, mutate } = useAllUsers({ params: foundFingerprint && queryParams?.account_type == "admin" ? queryParams : "" })
+  const { data: borrowerData, isLoading, mutate } = useAllUsers({ params: foundFingerprint && queryParams?.id && queryParams?.account_type != "admin" ? queryParams : "" })
 
   // Fetches book id based on scanned book
   const { data: rfidBookId, isLoading: loadingRfidBookId, mutate: mutateRfidBookId } = useBookRFID({ params: rfidCard ? { rfid: rfidCard } : {} })
-  const { bookdata, bookLoading } = useBooks({ params: { id: rfidBookId && rfidBookId?.data?.data?.book_id == id ? rfidBookId?.data?.data?.book_id : id ? id : "" } })
+  const { bookdata, bookLoading } = useBooks({ params: { id: rfidBookId && rfidBookId?.data?.book_id == id ? rfidBookId?.data?.book_id : id ? id : "" } })
 
   useEffect(() => {
     if (rfidData) {
@@ -70,10 +71,11 @@ const IssueBook = (props) => {
         data = fingerPrintData
       }
 
-      if (data?.message == "Fingerprint matched") {
+
+      setShowMessage(data)
+
+      if (data?.message == "Fingerprint Matched" && data?.id) {
         setFoundFingerprint(data?.id)
-      } else {
-        setShowMessage(data)
       }
     }
   }, [fingerPrintData])
@@ -81,17 +83,18 @@ const IssueBook = (props) => {
   useEffect(() => {
     if (!id) {
       router.push("/booksLibrary")
-    } else if (rfidBookId?.data?.data?.book_id != id) {
-
+    } else if (rfidBookId?.data?.book_id != id && borrowerData?.data[0]?.fingerprint_id == foundFingerprint) {
       if (rfidData && showMessage?.message == "Card Read") {
         setShowMessage({ ...showMessage, message: "Book mismatch" })
       }
-
       setDisableSubmitState(true)
-    } else {
+      console.log("setting disabled true")
+
+    } else if ((rfidBookId?.data?.book_id == id && auth_type == "user" )||(auth_type == "admin" && rfidBookId?.data?.book_id == id && foundFingerprint && borrowerData?.data[0]?.fingerprint_id == foundFingerprint)) {
       setDisableSubmitState(false)
+      console.log("setting disabled false")
     }
-  }, [rfidData, rfidBookId, id])
+  }, [rfidData, rfidBookId?.data?.book_id, foundFingerprint, id])
 
   // prints name of scanned borrower
   const showName = () => {
@@ -141,7 +144,7 @@ const IssueBook = (props) => {
         url: "user/fingerprint_manage",
         params: {
           operation: "search",
-          fingerprint: foundFingerprint
+          fingerprint_id: foundFingerprint
         }
       })
     }
@@ -152,7 +155,7 @@ const IssueBook = (props) => {
     if (foundFingerprint) {
       searchFingerprint()
         .then(res => {
-          setQueryParams({ ...res?.data })
+          setQueryParams({ ...res?.data, submit: true })
         })
         .catch(error => { alert(error?.response?.data?.message) })
 
@@ -268,6 +271,7 @@ const IssueBook = (props) => {
                   {auth_type == "admin" && <div className={`col-sm-3 ${fingerPrintScanning ? 'col-md-4' : 'col-md-2'}`}>
                     <button type="button" name="" className="btn btn-danger btn-block" onClick={(e) => {
                       e.stopPropagation()
+                      setQueryParams({ ...queryParams, submit: false })
                       scanFingerPrint({ command: "search" })
                     }}>
                       Scan Fingerprint
@@ -281,7 +285,7 @@ const IssueBook = (props) => {
                 </div>
 
                 <div className='m-t-20 text-center'>
-                  <button type="submit" className='btn btn-primary submit-btn' onClick={(e) => { e.stopPropagation() }} disabled={disableSubmit() && disableSubmitState}>Issue Book</button>
+                  <button type="submit" className='btn btn-primary submit-btn' onClick={(e) => { e.stopPropagation() }} disabled={disableSubmit()}>Issue Book</button>
                 </div>
               </form>
             </div>
