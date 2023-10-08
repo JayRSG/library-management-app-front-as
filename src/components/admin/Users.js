@@ -11,7 +11,8 @@ import { post } from "@/lib/axios"
 const Users = () => {
   const router = useRouter()
   const [queryParams, setQueryParams] = useState({
-    account_type: "user"
+    account_type: "user",
+    submit: false
   })
   const showUser = queryParams?.account_type == "user";
   const showAdmin = queryParams?.account_type == "admin";
