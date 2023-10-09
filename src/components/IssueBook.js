@@ -90,7 +90,7 @@ const IssueBook = (props) => {
       setDisableSubmitState(true)
       console.log("setting disabled true")
 
-    } else if ((rfidBookId?.data?.book_id == id && auth_type == "user" )||(auth_type == "admin" && rfidBookId?.data?.book_id == id && foundFingerprint && borrowerData?.data[0]?.fingerprint_id == foundFingerprint)) {
+    } else if ((rfidBookId?.data?.book_id == id && auth_type == "user") || (auth_type == "admin" && rfidBookId?.data?.book_id == id && foundFingerprint && borrowerData?.data[0]?.fingerprint_id == foundFingerprint)) {
       setDisableSubmitState(false)
       console.log("setting disabled false")
     }
