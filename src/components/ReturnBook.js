@@ -39,13 +39,13 @@ const ReturnBook = (props) => {
 
   useEffect(() => {
     if (rfidBookId) {
-      if (rfidBookId?.data?.bookk_id != bookBorrowData?.book_id) {
+      if (rfidBookId?.data?.id != bookBorrowData?.rfid_rel_id) {
         setShowMessage({ ...showMessage, action: "rfid", message: "Book Mismatch" })
       } else {
         setShowMessage("")
       }
     }
-  }, [rfidBookId?.data?.book_id, bookBorrowData?.book_id])
+  }, [rfidBookId?.data?.id, bookBorrowData?.rfid_rel_id])
 
   useEffect(() => {
     if (rfidBookId && fingerprint && bookBorrowData && saveButtonState) {
@@ -69,10 +69,10 @@ const ReturnBook = (props) => {
 
       <div className="container">
         <div className="row">
-          <div>{rfidBookId?.data?.book_id == bookBorrowData?.book_id && <FontAwesomeIcon className="text-success" icon={faCheck} />} Book Name: {bookBorrowData?.name}</div>
-          <div>{rfidBookId?.data?.book_id == bookBorrowData?.book_id && <FontAwesomeIcon className="text-success" icon={faCheck} />} Edition: {bookBorrowData?.edition}</div>
-          <div>{rfidBookId?.data?.book_id == bookBorrowData?.book_id && <FontAwesomeIcon className="text-success" icon={faCheck} />} Author: {bookBorrowData?.author}</div>
-          <div>{rfidBookId?.data?.book_id == bookBorrowData?.book_id && <FontAwesomeIcon className="text-success" icon={faCheck} />} Publisher: {bookBorrowData?.publisher}</div>
+          <div>{rfidBookId?.data?.id == bookBorrowData?.rfid_rel_id && <FontAwesomeIcon className="text-success" icon={faCheck} />} Book Name: {bookBorrowData?.name}</div>
+          <div>{rfidBookId?.data?.id == bookBorrowData?.rfid_rel_id && <FontAwesomeIcon className="text-success" icon={faCheck} />} Edition: {bookBorrowData?.edition}</div>
+          <div>{rfidBookId?.data?.id == bookBorrowData?.rfid_rel_id && <FontAwesomeIcon className="text-success" icon={faCheck} />} Author: {bookBorrowData?.author}</div>
+          <div>{rfidBookId?.data?.id == bookBorrowData?.rfid_rel_id && <FontAwesomeIcon className="text-success" icon={faCheck} />} Publisher: {bookBorrowData?.publisher}</div>
           <div>{fingerprint && <FontAwesomeIcon className="text-success" icon={faCheck} />} Borrower: {bookBorrowData?.first_name + " " + bookBorrowData?.last_name}</div>
         </div>
       </div>
