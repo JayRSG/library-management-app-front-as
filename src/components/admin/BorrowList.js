@@ -86,8 +86,7 @@ const BorrowList = () => {
           borrowMutate={borrowMutate}
         />
       )
-
-      handleOpenModal()
+      handleOpenModal("Return Book")
     }
   }, [bookReturnData, saveButtonState])
 
@@ -130,8 +129,8 @@ const BorrowList = () => {
     })
   }
 
-  const handleOpenModal = () => {
-    setModalTitle("Fine Payment")
+  const handleOpenModal = (title) => {
+    setModalTitle(title)
     handleShowModal();
   };
 
@@ -327,7 +326,7 @@ const BorrowList = () => {
 
                               if (fineInfo[ind]) {
                                 setFinePaymentData({ ...data, fineInfo: fineInfo[ind] })
-                                handleOpenModal()
+                                handleOpenModal("Fine Payment")
                               }
                             }
                             }>
@@ -348,7 +347,7 @@ const BorrowList = () => {
             </table>
           </div>
         </div>
-      </div >
+      </div>
 
       <PopupModal
         title={modalTitle}
