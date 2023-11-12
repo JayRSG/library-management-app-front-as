@@ -290,12 +290,12 @@ const BorrowList = () => {
                     <td>{data?.reissue_time}</td>
                     <td>{data?.due_time}</td>
                     <td>{data?.issue_user_type == "admin" ?
-                      data?.issuer_admin_first_name + " " + data?.issuer_admin_last_name : data?.issue_user_type == "user" && data?.issuer_user_first_name + " " + data?.issuer_user_last_name}</td>
+                      (data?.issuer_admin_first_name || "") + " " + (data?.issuer_admin_last_name || "") : data?.issue_user_type == "user" && (data?.issuer_user_first_name || "") + " " + (data?.issuer_user_last_name || "")}</td>
                     <td>{data?.issue_user_type}</td>
                     <td>{data?.return_time}</td>
                     <td>{data?.return_user_type == "admin" ?
-                      data?.return_admin_first_name + " " + data?.return_admin_last_name :
-                      data?.return_user_type == "user" && data?.return_user_first_name + " " + data?.return_user_last_name}</td>
+                      (data?.return_admin_first_name || "") + " " + (data?.return_admin_last_name || "") :
+                      data?.return_user_type == "user" && (data?.return_user_first_name || "") + " " + (data?.return_user_last_name || "")}</td>
                     <td>{data?.return_user_type}</td>
                     <td>{fine[ind] ? data?.late_fine : ""}</td>
                     <td>{fine[ind] && data?.late_fine ? (fine[ind] - data?.late_fine) : ""}</td>
