@@ -205,7 +205,7 @@ const IssueBook = (props) => {
         <div className='content'>
           <div className='row'>
             <div className='col-lg-8 offset-lg-2'>
-              <h4 className='page-title'>Issue Book</h4>
+              <h4 className='page-title'>{auth_type == "admin" ? "Issue Book" : auth_type == "user" && "Borrow Book"}</h4>
             </div>
           </div>
           <div className='row'>
