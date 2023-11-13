@@ -285,7 +285,7 @@ const IssueBook = (props) => {
                 </div>
 
                 <div className='m-t-20 text-center'>
-                  <button type="submit" className='btn btn-primary submit-btn' onClick={(e) => { e.stopPropagation() }} disabled={disableSubmit()}>Issue Book</button>
+                  <button type="submit" className='btn btn-primary submit-btn' onClick={(e) => { e.stopPropagation() }} disabled={disableSubmit()}>{auth_type == "admin" ? "Issue Book" : auth_type == "user" && "Borrow Book"}</button>
                 </div>
               </form>
             </div>
