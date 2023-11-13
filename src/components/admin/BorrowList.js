@@ -17,7 +17,7 @@ const BorrowList = () => {
     returned: 1,
     book_id: "",
     user_id: "",
-    book_rfid_rel_id: "",
+    rfid: "",
     name: "",
     date_from: "",
     date_to: "",
@@ -93,10 +93,10 @@ const BorrowList = () => {
   }, [bookReturnData, saveButtonState])
 
   useEffect(() => {
-    if (rfidBookId) {
-      setQueryParams({ ...queryParams, book_id: rfidBookId?.data?.book_id, name: rfidBookId?.data?.name, book_rfid_rel_id: rfidBookId?.data?.id })
+    if (rfidBookId && rfid) {
+      setQueryParams({ ...queryParams, book_id: rfidBookId?.data?.book_id, name: rfidBookId?.data?.name, rfid: rfid })
     }
-  }, [rfidBookId?.data?.book_id])
+  }, [rfidBookId?.data?.book_id, rfid])
 
   useEffect(() => {
     if (queryParams) {
