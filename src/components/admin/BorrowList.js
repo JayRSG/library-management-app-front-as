@@ -308,7 +308,7 @@ const BorrowList = () => {
                       calcualteFine(ind, data?.id, data?.user_id)
                     }}>Calculate Fine</button>)}</td>
                     <td>{data?.fine_payment_date ?? "N/A"}</td>
-                    <td>{data?.fine_excused ? "Excused" : "N/A"}</td>
+                    <td>{data?.fine_excused == "1" ? "Excused" : (data?.fine_excused == "0" || data?.fine_excused == null && "N/A")}</td>
                     <td>{data?.returned == 1 ? "Returned" : "Not Returned"}</td>
                     <td className='text-right'> {/* Action */}
                       <div className='dropdown dropdown-action' style={{ position: "absolute" }}>
