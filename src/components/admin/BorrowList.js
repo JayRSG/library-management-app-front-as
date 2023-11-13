@@ -17,6 +17,8 @@ const BorrowList = () => {
     returned: 1,
     book_id: "",
     user_id: "",
+    book_rfid_rel_id: "",
+    name: "",
     date_from: "",
     date_to: "",
     submit: false
@@ -92,7 +94,7 @@ const BorrowList = () => {
 
   useEffect(() => {
     if (rfidBookId) {
-      setQueryParams({ ...queryParams, book_id: rfidBookId?.data?.book_id })
+      setQueryParams({ ...queryParams, book_id: rfidBookId?.data?.book_id, name: rfidBookId?.data?.name, book_rfid_rel_id: rfidBookId?.data?.id })
     }
   }, [rfidBookId?.data?.book_id])
 
@@ -222,7 +224,9 @@ const BorrowList = () => {
               communicateDevice({ command: "read" })
             }} type="button" className="form-control bg-info text-white rounded" id="book_id" name="book_id" value="Scan Book" /></label>
 
-            <label style={{ marginLeft: "10px", marginTop: "20px" }}><input type="text" placeholder="Book ID" className="form-control" id="book_id" name="book_id" value={queryParams?.book_id} onChange={e => handleInputChange(e)} /></label>
+            <h5 style={{ marginTop: "30px", paddingLeft: "10px" }}>{queryParams?.name}</h5>
+
+            <label style={{ marginLeft: "10px", marginTop: "20px" }}><input type="text" placeholder="Book ID" className="form-control" id="book_id" name="book_id" value={queryParams?.book_id} onChange={e => handleInputChange(e)} hidden /></label>
 
             <label style={{ marginLeft: "10px" }}>User: <input placeholder="Email, Phone or Student ID" type="text" className="form-control" id="user_id" name="user_id" value={queryParams?.user_id} onChange={e => handleInputChange(e)} /></label>
 
